@@ -1,13 +1,21 @@
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class ParkingAssistantTest {
 
     @Test
     public void testMoveForward() {
-        // Test the MoveForward method
-        // Add assertions to verify the expected behavior
+        ParkingAssistant parkingAssistant = new ParkingAssistant();
+        MovementDataStructure result = parkingAssistant.MoveForward();
+
+        assertEquals(1, result.getcurrentPosition(), "The car should have moved forward by 1 meter.");
+
     }
+
+    @Test  
+    public void testMoveForwardAtEndOfStreet() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant();
 
     @Test
     public void testIsEmpty() {
