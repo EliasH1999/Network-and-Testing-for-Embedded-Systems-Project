@@ -5,7 +5,6 @@ public class ParkingAssistant{
         // and the situation of the detected parking places up to now. The car cannot be moved forward beyond the end of the street.
 
         /**
-        Description
         Pre-condition:
         Post-condition:
         Test-cases:
@@ -19,7 +18,6 @@ public class ParkingAssistant{
         // sensors.  
 
         /**
-        Description
         Pre-condition:
         Post-condition:
         Test-cases:
@@ -31,7 +29,6 @@ public class ParkingAssistant{
         // The car cannot be moved behind if it is already at the beginning of the street.  
 
         /**
-        Description
         Pre-condition:
         Post-condition:
         Test-cases:
@@ -43,7 +40,6 @@ public class ParkingAssistant{
         // or moves the car forwards towards the end of the street until such a stretch is detected, and then parks it. 
 
         /**
-        Description
         Pre-condition:
         Post-condition:
         Test-cases:
@@ -54,7 +50,6 @@ public class ParkingAssistant{
         // It moves the car forward (and to left) to front of the parking place, if it is parked. 
 
         /**
-        Description
         Pre-condition:
         Post-condition:
         Test-cases:
@@ -65,7 +60,6 @@ public class ParkingAssistant{
         // This method returns the current position of the car in the street as well as its (un)parked status.
 
         /**
-        Description
         Pre-condition:
         Post-condition:
         Test-cases:
