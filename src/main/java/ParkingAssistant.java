@@ -5,7 +5,7 @@ public class ParkingAssistant{
         // and the situation of the detected parking places up to now. The car cannot be moved forward beyond the end of the street.
 
         /**
-        Pre-condition:
+        Pre-condition: 
         Post-condition:
         Test-cases:
         */
