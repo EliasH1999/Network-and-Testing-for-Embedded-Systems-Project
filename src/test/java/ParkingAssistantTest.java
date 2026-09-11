@@ -1,5 +1,6 @@
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 
 public class ParkingAssistantTest {
@@ -16,7 +17,8 @@ public class ParkingAssistantTest {
     @Test  
     public void testMoveForwardAtEndOfStreet() {
         ParkingAssistant parkingAssistant = new ParkingAssistant();
-
+    
+    }
     @Test
     public void testIsEmpty() {
         // Test the isEmpty method
