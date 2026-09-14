@@ -1,6 +1,26 @@
 public class ParkingAssistant{
     
-    public ??? MoveForward(){
+    public class CarStatus{
+        private int position;
+        private boolean parked;
+
+        public CarStatus(int position, boolean parked){
+
+            this.position = position;
+            this.parked = parked;
+
+        }
+
+         public int getPosition() {
+            return position;
+        }
+
+        public boolean isParked() {
+            return parked;
+        }
+    }
+    
+    //public ??? MoveForward(){
         // This method moves the car 1 meter forward, queries the two sensors through the isEmpty method described below and returns a data structure that contains the current position of the car, 
         // and the situation of the detected parking places up to now. The car cannot be moved forward beyond the end of the street.
 
@@ -9,9 +29,9 @@ public class ParkingAssistant{
         Post-condition:
         Test-cases:
         */
-    }
+    //}
     
-    public ??? isEmpty(){
+    //public ??? isEmpty(){
         // This method queries the two ultrasound sensors at least 5 times and filters the noise in their results and returns the distance in cm to the nearest object 
         // in the right hand side. If one sensor is detected to continuously return very noisy output, 
         // it should be completely disregarded. You can use averaging or any other statistical method to filter the noise from the signals received from the ultrasound 
@@ -22,9 +42,9 @@ public class ParkingAssistant{
         Post-condition:
         Test-cases:
         */
-    }
+    //}
 
-    public ??? MoveBackward(){
+    //public ??? MoveBackward(){
         // The same as MoveForward above; only it moves the car 1 meter backwards. 
         // The car cannot be moved behind if it is already at the beginning of the street.  
 
@@ -33,9 +53,9 @@ public class ParkingAssistant{
         Post-condition:
         Test-cases:
         */
-    }
+    //}
 
-    public ??? Park(){
+    //public ??? Park(){
         // It performs a pre-programmed reverse parallel parking maneuver, if it is already positioned at an empty parking space stretch, 
         // or moves the car forwards towards the end of the street until such a stretch is detected, and then parks it. 
 
@@ -44,9 +64,9 @@ public class ParkingAssistant{
         Post-condition:
         Test-cases:
         */
-    }
+    //}
 
-    public ??? Unpark(){
+    //public ??? Unpark(){
         // It moves the car forward (and to left) to front of the parking place, if it is parked. 
 
         /**
@@ -54,15 +74,18 @@ public class ParkingAssistant{
         Post-condition:
         Test-cases:
         */
-    }
-
-    public ??? Wherels(){
+    //}
+    
+    public CarStatus Wherels(){
         // This method returns the current position of the car in the street as well as its (un)parked status.
+
+        // Street 500 m long, (un)parked is true or false 
 
         /**
         Pre-condition:
         Post-condition:
         Test-cases:
         */
+       return new CarStatus(0, false); // Placeholder return value  
     }
 }

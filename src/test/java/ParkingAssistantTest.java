@@ -7,6 +7,7 @@ public class ParkingAssistantTest {
     public void testMoveForward() {
         // Test the MoveForward method
         // Add assertions to verify the expected behavior
+
     }
 
     @Test
@@ -37,5 +38,12 @@ public class ParkingAssistantTest {
     public void testWherels() {
         // Test the Wherels method
         // Add assertions to verify the expected behavior
+
+        ParkingAssistant assistant = new ParkingAssistant();
+
+        ParkingAssistant.CarStatus status = assistant.Wherels();
+
+        assertTrue(status.getPosition() >= 0 && status.getPosition() <= 500);
+
     }
 }
