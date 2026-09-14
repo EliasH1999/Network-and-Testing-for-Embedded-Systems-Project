@@ -20,6 +20,9 @@ public class ParkingAssistant{
         */
     }
     
+    public ParkingAssistant(int currentPosition) {
+        this.currentPosition = currentPosition;
+    }
     // public ??? isEmpty(){
 
 
@@ -34,16 +37,20 @@ public class ParkingAssistant{
     //     */
     // }
 
-    // public ??? MoveBackward(){
+        public MovementDataStructure MoveBackward(){
+            if(currentPosition > 0) {
+                currentPosition--;
+            }
+            return new MovementDataStructure(currentPosition);
 
-    //     /**
-    //     Description: The same as MoveForward above; only it moves the car 1 meter backwards.
-    //     The car cannot be moved behind if it is already at the beginning of the street.
-    //     Pre-condition:
-    //     Post-condition:
-    //     Test-cases:
-    //     */
-    // }
+         
+        //  Description: The same as MoveForward above; only it moves the car 1 meter backwards.
+        //  The car cannot be moved behind if it is already at the beginning of the street.
+        //  Pre-condition:
+        //  Post-condition:
+        //  Test-cases:
+         
+     }
 
     // public ??? Park(){
        
