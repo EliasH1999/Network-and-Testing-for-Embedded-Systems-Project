@@ -1,5 +1,4 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
 
 
@@ -44,18 +43,17 @@ public class ParkingAssistantTest {
     @Test
     public void testIsEmptyWithNoisySensor() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
-        int[] sensor1 = {100, 120, 130, 140, 150}; // Noisy sensor
+        int[] sensor1 = {100, 120, 130, 140, 160};
         int[] sensor2 = {110, 115, 125, 135, 140};
         int result = parkingAssistant.isEmpty(sensor1, sensor2);
         assertEquals(125, result, "The distance to the nearest object should be 125 cm, disregarding the noisy sensor.");
         
 
 
-
     
         // Test the isEmpty method
         // Add assertions to verify the expected behavior
-    
+    }
 
     @Test
     public void testMoveBackward() {
