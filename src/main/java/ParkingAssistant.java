@@ -23,7 +23,20 @@ public class ParkingAssistant{
     public ParkingAssistant(int currentPosition) {
         this.currentPosition = currentPosition;
     }
-    // public ??? isEmpty(){
+    public int isEmpty(int [] sensor1, int [] sensor2){
+
+        int average = (sensor1[2] + sensor2[2]) / 2;
+        /**
+        Description:This method queries the two ultrasound sensors at least 5 times and filters the noise in their results and returns the distance in cm to the nearest object 
+        in the right hand side. If one sensor is detected to continuously return very noisy output, 
+        it should be completely disregarded. You can use averaging or any other statistical method to filter the noise from the signals received from the ultrasound 
+        sensors.  
+        Pre-condition:
+        Post-condition:
+        Test-cases:
+        */
+       return average;
+    }
 
 
     //     /**
@@ -35,7 +48,7 @@ public class ParkingAssistant{
     //     Post-condition:
     //     Test-cases:
     //     */
-    // }
+     
 
         public MovementDataStructure MoveBackward(){
             if(currentPosition > 0) {
@@ -82,4 +95,4 @@ public class ParkingAssistant{
     //     Test-cases:
     //     */
     // } 
-}
+    }

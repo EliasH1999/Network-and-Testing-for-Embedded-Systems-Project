@@ -25,9 +25,37 @@ public class ParkingAssistantTest {
     }
     @Test
     public void testIsEmpty() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        int result = parkingAssistant.isEmpty(sensor1, sensor2);
+        assertEquals(127, result, "The average distance to the nearest object should be 127 cm.");
+    }
+
+    @Test
+    public void testIsNotEmpty() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {10, 15, 20, 25, 30};
+        int[] sensor2 = {5, 10, 15, 20, 25};
+        int result = parkingAssistant.isEmpty(sensor1, sensor2);
+        assertEquals(17, result, "The average distance to the nearest object should be 17 cm.");
+    }
+
+    @Test
+    public void testIsEmptyWithNoisySensor() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 150}; // Noisy sensor
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        int result = parkingAssistant.isEmpty(sensor1, sensor2);
+        assertEquals(125, result, "The distance to the nearest object should be 125 cm, disregarding the noisy sensor.");
+        
+
+
+
+    
         // Test the isEmpty method
         // Add assertions to verify the expected behavior
-    }
+    
 
     @Test
     public void testMoveBackward() {
