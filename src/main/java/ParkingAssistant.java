@@ -1,5 +1,5 @@
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 public class ParkingAssistant{
     private int position = 0;
@@ -51,9 +51,10 @@ public class ParkingAssistant{
             all other entries of parkingPlaces remain unchanged
             Otherwise (position == 500 or parked)
             state of the car and parkingPlaces remain unchanged
-        Test-cases: TC1: normal move from the middle of the street
-        TC2: first move from 0
-        TC3: last move from 500
+        Test-cases: 
+        TC1: first move from 0
+        TC2: last move from 500
+        TC3: normal move from the middle of the street
         TC4: move when parked, state unchanged
         TC5: free meter (isEmpty() >= 100) recorded as true
         TC6: occupied meter (isEmpty() < 100) recorded as false
@@ -113,11 +114,13 @@ public class ParkingAssistant{
             if one sensor is noisy, return the median of the other sensor
             if both sensors are noisy, return 0
         position of the car and parkingPlaces remain unchanged
-        Test-cases: TC1: both sensors are not noisy, return average of medians
-        TC2: sensor 1 is noisy, return median of the other sensor
-        TC3: both sensors are noisy, return 0
-        TC4: sensor 2 is noisy, return median of the other sensor
-        TC5: spread exactly 50, not noisy
+        Test-cases: 
+        TC1: both sensors are not noisy, return average of medians
+        TC2: no sensor is noisy, but no free space, return average of medians
+        TC3: sensor 1 is noisy, return median of the other sensor
+        TC4: both sensors are noisy, return 0
+        TC5: sensor 2 is noisy, return median of the other sensor
+        TC6: spread exactly 50, not noisy
         TC6: each sensor is read exactly 5 times
         TC7: no side effects, position and parkingPlaces unchanged
         */
@@ -129,7 +132,7 @@ public class ParkingAssistant{
             if(position > 0) {
                 position--;
             }
-            return ParkingStatus(position);
+            return new ParkingStatus(position, parkingPlaces);
 
          
         /*   Description: The same as MoveForward above; only it moves the car 1 meter backwards.
@@ -141,7 +144,8 @@ public class ParkingAssistant{
           Otherwise (position == 0 or parked)
           state unchanged, isEmpty() not called
           A ParkingStatus snapchat of the resulting state is returned.
-          Test-cases: TC1: normal move from the middle of the street
+          Test-cases: 
+            TC1: normal move from the middle of the street
             TC2: first move from 0
             TC3: while parked: state unchanged
             TC4: arriving meter re-sensed and earlier reading is overwritten
