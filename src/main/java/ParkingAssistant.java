@@ -24,6 +24,7 @@ public class ParkingAssistant{
         this.sensor2Readings = sensor2;
     }
 
+
     public ParkingStatus MoveForward(){
         
         if(position < streetLength) {
@@ -67,8 +68,8 @@ public class ParkingAssistant{
     }
     public int isEmpty(){
 
-        int[] readings1 = new int[5];
-        int[] readings2 = new int[5];
+        int[] readings1 = sensor1Readings;
+        int[] readings2 = sensor2Readings;
 
         /*
         for(int i = 0; i < 5; i++){
@@ -123,12 +124,12 @@ public class ParkingAssistant{
        
     }
      
-
+    
         public ParkingStatus MoveBackward(){
             if(position > 0) {
                 position--;
             }
-            return new ParkingStatus(position);
+            return ParkingStatus(position);
 
          
         /*   Description: The same as MoveForward above; only it moves the car 1 meter backwards.
@@ -148,7 +149,8 @@ public class ParkingAssistant{
             TC6: returned status is a snapshot (unchanged by a later move)
         */ 
          
-     }
+        }
+    
 
     // public ??? Park(){
        
