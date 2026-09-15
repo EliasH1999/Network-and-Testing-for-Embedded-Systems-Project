@@ -3,9 +3,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
 
 
-public class ParkingAssistantTest {
 
-    @Test
+public class ParkingAssistantTest {
+    @Test //TS-MF-1
+    public void testMoveForwardFromMiddleofStreet() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(250);
+        ParkingStatus result = parkingAssistant.MoveForward();
+
+        assertEquals(251, result.getcurrentPosition(), "The car should have moved forward by 1 meter from the middle of the street.");
+    }
+    
+    @Test //TS-MF-2
     public void testMoveForward() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         ParkingStatus result = parkingAssistant.MoveForward();
@@ -14,7 +22,7 @@ public class ParkingAssistantTest {
 
     }
 
-    @Test  
+    @Test //TS-MF-3
     public void testMoveForwardAtEndOfStreet() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(500);
         ParkingStatus result = parkingAssistant.MoveForward();
@@ -24,15 +32,7 @@ public class ParkingAssistantTest {
         
     }
 
-    @Test
-    public void testMoveForwardFromMiddleofStreet() {
-        ParkingAssistant parkingAssistant = new ParkingAssistant(250);
-        ParkingStatus result = parkingAssistant.MoveForward();
-
-        assertEquals(251, result.getcurrentPosition(), "The car should have moved forward by 1 meter from the middle of the street.");
-    }
-
-    @Test
+    @Test //TS-MF-4
     public void testMoveForwardWhenParked() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(100);
         parkingAssistant.Park(); // Park the car
@@ -41,7 +41,7 @@ public class ParkingAssistantTest {
         assertEquals(100, result.getcurrentPosition(), "The car should not move forward when parked.");
     }
 
-    @Test
+    @Test //TS-MF-5
     public void testMoveForwardWithFreeMeter() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
 
@@ -54,7 +54,7 @@ public class ParkingAssistantTest {
         assertEquals(1, result.getcurrentPosition(), "The car should have moved forward by 1 meter. Free meter");
     }
 
-    @Test
+    @Test //TS-MF-6
     public void testMoveForwardWithOccupiedMeter() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {10, 15, 20, 25, 30};
@@ -64,7 +64,7 @@ public class ParkingAssistantTest {
 
         assertEquals(1, result.getcurrentPosition(), "The car should have moved forward by 1 meter. Occupied meter");
     }
-    @Test
+    @Test 
     public void testIsEmpty() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {100, 120, 130, 140, 145};
@@ -102,7 +102,7 @@ public class ParkingAssistantTest {
         // Add assertions to verify the expected behavior
     }
 
-    @Test
+    @Test 
     public void testMoveBackward() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(1);
         ParkingStatus result = parkingAssistant.MoveBackward();
