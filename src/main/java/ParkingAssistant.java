@@ -1,3 +1,4 @@
+import java.util.Arrays;
 public class ParkingAssistant{
     private int currentPosition = 0;
     private int streetLength = 500;
@@ -23,7 +24,44 @@ public class ParkingAssistant{
     public ParkingAssistant(int currentPosition) {
         this.currentPosition = currentPosition;
     }
-    // public ??? isEmpty(){
+    public int isEmpty(int [] sensor1, int [] sensor2){
+
+        Arrays.sort(sensor1);
+        Arrays.sort(sensor2);
+
+        int median1 = sensor1[2];
+        int median2 = sensor2[2];
+
+        int DifferenceValue1 = sensor1[4] - sensor1[0];
+        int DifferenceValue2 = sensor2[4] - sensor2[0];
+
+        boolean Sensor1Noisy = DifferenceValue1 > 50;
+        boolean Sensor2Noisy = DifferenceValue2 > 50;
+
+        if(Sensor1Noisy && Sensor2Noisy){
+            return 0;
+        }
+        else if(Sensor1Noisy){
+            return median2;
+        }
+        else if(Sensor2Noisy){
+            return median1;
+        }
+        else{
+            return (median1 + median2) / 2;
+        }
+
+        /**
+        Description:This method queries the two ultrasound sensors at least 5 times and filters the noise in their results and returns the distance in cm to the nearest object 
+        in the right hand side. If one sensor is detected to continuously return very noisy output, 
+        it should be completely disregarded. You can use averaging or any other statistical method to filter the noise from the signals received from the ultrasound 
+        sensors.  
+        Pre-condition:
+        Post-condition:
+        Test-cases:
+        */
+       
+    }
 
 
     //     /**
@@ -35,7 +73,7 @@ public class ParkingAssistant{
     //     Post-condition:
     //     Test-cases:
     //     */
-    // }
+     
 
         public MovementDataStructure MoveBackward(){
             if(currentPosition > 0) {
@@ -82,4 +120,4 @@ public class ParkingAssistant{
     //     Test-cases:
     //     */
     // } 
-}
+    }
