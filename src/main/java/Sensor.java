@@ -1,13 +1,14 @@
 public class Sensor {
     
-    int[] readings1 = new int[5];
-    int[] readings2 = new int[5];
     /*int[] readings3 = new int[5];
     int[] readings4 = new int[5];
     int[] readings5 = new int[5];*/
+    private int[] sensor1Readings;
+    private int[] sensor2Readings;
 
-    public Sensor() {
-
+    public void setSensorReadings(int[] sensor1, int[] sensor2) {
+        this.sensor1Readings = sensor1;
+        this.sensor2Readings = sensor2;
     }
 
     /*
@@ -20,8 +21,5 @@ public class Sensor {
     
     
     */
-    public int[] checkSensor() {
-        return new int[]{100, 120, 130, 140, 145};
-    }
 
 }

@@ -16,6 +16,14 @@ public class ParkingAssistant{
         return position;
     }*/
 
+    private int[] sensor1Readings;
+    private int[] sensor2Readings;
+
+    public void setSensorReadings(int[] sensor1, int[] sensor2) {
+        this.sensor1Readings = sensor1;
+        this.sensor2Readings = sensor2;
+    }
+
     public ParkingStatus MoveForward(){
         
         if(position < streetLength) {

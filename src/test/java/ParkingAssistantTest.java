@@ -44,8 +44,10 @@ public class ParkingAssistantTest {
     @Test
     public void testMoveForwardWithFreeMeter() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
+
         parkingAssistant.isEmpty(sensor1, sensor2); // Simulate free meter
         ParkingStatus result = parkingAssistant.MoveForward();
 
@@ -67,7 +69,7 @@ public class ParkingAssistantTest {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
-        int result = parkingAssistant.isEmpty(sensor1, sensor2);
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
         assertEquals(127, result, "The average distance to the nearest object should be 127 cm.");
     }
 
