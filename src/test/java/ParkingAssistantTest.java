@@ -1,6 +1,5 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
 
 
@@ -91,16 +90,34 @@ public class ParkingAssistantTest {
         // Add assertions to verify the expected behavior
     }
 
-    @Test
-    public void testWherels() {
         // Test the Wherels method
         // Add assertions to verify the expected behavior
 
-        ParkingAssistant assistant = new ParkingAssistant();
+    @Test
+    public void testWherelsInitialState() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
 
-        ParkingAssistant.CarStatus status = assistant.Wherels();
+        CarStatus result = parkingAssistant.WhereIs();
 
-        assertTrue(status.getPosition() >= 0 && status.getPosition() <= 500);
-
+        assertEquals(0, result.getPosition(), "The initial position should be 0.");
+        assertFalse(result.isParked(), "The car should not be parked initially.");
     }
+
+    @Test 
+    public void testWherelsAfterMoving() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        parkingAssistant.MoveForward();
+        parkingAssistant.MoveForward();
+
+        CarStatus result = parkingAssistant.WhereIs();
+
+        assertEquals(2, result.getPosition(), "The position should be 2 after moving forward twice.");
+        assertFalse(result.isParked(), "The car should not be parked after moving.");
+    }
+
+    @Test
+    public void testWhereIsafterPark(){}
+
+    @Test 
+    public void testWhereIsafterUnpark(){}
 }

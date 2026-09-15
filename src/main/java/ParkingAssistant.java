@@ -3,6 +3,16 @@ public class ParkingAssistant{
     private int position = 0;
     private int streetLength = 500;
     private boolean parked = false;
+
+    /* Vet inte om detta behövs
+    public boolean getParkedStatus() {
+        return parked;
+    }
+
+    public int getPosition() {
+        return position;
+    }*/
+
     public ParkingStatus MoveForward(){
         
         if(position < streetLength) {
@@ -135,7 +145,7 @@ public class ParkingAssistant{
     */
     // }
 
-    public CarStatus Wherels(){
+    public CarStatus WhereIs(){
     // This method returns the current position of the car in the street as well as its (un)parked status.
         
     CarStatus carStatus = new CarStatus(position, parked);
