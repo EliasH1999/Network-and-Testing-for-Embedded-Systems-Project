@@ -35,7 +35,7 @@ public class ParkingAssistantTest {
     @Test
     public void testMoveForwardWhenParked() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(100);
-        parkingAssistant.Park(); // Park the car
+        //parkingAssistant.Park(); // Park the car
         ParkingStatus result = parkingAssistant.MoveForward();
 
         assertEquals(100, result.getcurrentPosition(), "The car should not move forward when parked.");
@@ -44,11 +44,12 @@ public class ParkingAssistantTest {
     @Test
     public void testMoveForwardWithFreeMeter() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
-
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
+        
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        int resultIsEmpty = parkingAssistant.isEmpty();
 
-        parkingAssistant.isEmpty(sensor1, sensor2); // Simulate free meter
         ParkingStatus result = parkingAssistant.MoveForward();
 
         assertEquals(1, result.getcurrentPosition(), "The car should have moved forward by 1 meter. Free meter");
@@ -59,6 +60,8 @@ public class ParkingAssistantTest {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {10, 15, 20, 25, 30};
         int[] sensor2 = {5, 10, 15, 20, 25};
+
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
         parkingAssistant.isEmpty(); // Simulate occupied meter
         ParkingStatus result = parkingAssistant.MoveForward();  
 
@@ -69,7 +72,10 @@ public class ParkingAssistantTest {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
+        
         parkingAssistant.setSensorReadings(sensor1, sensor2);
+        int result = parkingAssistant.isEmpty();
+
         assertEquals(127, result, "The average distance to the nearest object should be 127 cm.");
     }
 
@@ -78,7 +84,10 @@ public class ParkingAssistantTest {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {10, 15, 20, 25, 30};
         int[] sensor2 = {5, 10, 15, 20, 25};
-        int result = parkingAssistant.isEmpty(sensor1, sensor2);
+        
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        int result = parkingAssistant.isEmpty();
+
         assertEquals(17, result, "The average distance to the nearest object should be 17 cm.");
     }
 
@@ -87,7 +96,8 @@ public class ParkingAssistantTest {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {100, 120, 130, 140, 160};
         int[] sensor2 = {110, 115, 125, 135, 140};
-        int result = parkingAssistant.isEmpty(sensor1, sensor2);
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        int result = parkingAssistant.isEmpty();
         assertEquals(125, result, "The distance to the nearest object should be 125 cm, disregarding the noisy sensor.");
     }
     @Test
@@ -95,7 +105,8 @@ public class ParkingAssistantTest {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {100, 120, 130, 140, 160};
         int[] sensor2 = {110, 115, 125, 135, 170};
-        int result = parkingAssistant.isEmpty(sensor1, sensor2);
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        int result = parkingAssistant.isEmpty();
         assertEquals(0, result, "Both sensors are noisy, so the result should be 0.");
     
         // Test the isEmpty method
