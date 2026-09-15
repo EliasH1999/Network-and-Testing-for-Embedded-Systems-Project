@@ -1,15 +1,24 @@
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParkingStatus {
     // Define the fields and methods for the MovementDataStructure class
     // This class should contain information about the current position of the car and the situation 
     // of the detected parking places
     private int currentPosition;
-    public ParkingStatus(int currentPosition) {
+    private List<Boolean> parkingPlaces = new ArrayList<Boolean>();
+    public ParkingStatus(int currentPosition, List<Boolean> parkingPlaces) {
         this.currentPosition = currentPosition;
+        this.parkingPlaces = parkingPlaces;
     }
-        public int getcurrentPosition() {
+    public int getcurrentPosition() {
         return currentPosition;
     }
+
+    public List<Boolean> getparkingPlaces() {
+        return new ArrayList<>(parkingPlaces);
+    }
+
     /*
     Description: Returns the current position of the car as well as the parking record.
     Pre-condition: Parking places it non null and has length of 501

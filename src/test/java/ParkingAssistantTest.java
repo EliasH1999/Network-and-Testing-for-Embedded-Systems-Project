@@ -24,6 +24,45 @@ public class ParkingAssistantTest {
 
         
     }
+
+    @Test
+    public void testMoveForwardFromMiddleofStreet() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(250);
+        ParkingStatus result = parkingAssistant.MoveForward();
+
+        assertEquals(251, result.getcurrentPosition(), "The car should have moved forward by 1 meter from the middle of the street.");
+    }
+
+    @Test
+    public void testMoveForwardWhenParked() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(100);
+        parkingAssistant.Park(); // Park the car
+        ParkingStatus result = parkingAssistant.MoveForward();
+
+        assertEquals(100, result.getcurrentPosition(), "The car should not move forward when parked.");
+    }
+
+    @Test
+    public void testMoveForwardWithFreeMeter() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.isEmpty(sensor1, sensor2); // Simulate free meter
+        ParkingStatus result = parkingAssistant.MoveForward();
+
+        assertEquals(1, result.getcurrentPosition(), "The car should have moved forward by 1 meter. Free meter");
+    }
+
+    @Test
+    public void testMoveForwardWithOccupiedMeter() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {10, 15, 20, 25, 30};
+        int[] sensor2 = {5, 10, 15, 20, 25};
+        parkingAssistant.isEmpty(); // Simulate occupied meter
+        ParkingStatus result = parkingAssistant.MoveForward();  
+
+        assertEquals(1, result.getcurrentPosition(), "The car should have moved forward by 1 meter. Occupied meter");
+    }
     @Test
     public void testIsEmpty() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
