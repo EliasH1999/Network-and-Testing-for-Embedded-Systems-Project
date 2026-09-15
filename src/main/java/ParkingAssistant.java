@@ -2,12 +2,12 @@ import java.util.Arrays;
 public class ParkingAssistant{
     private int currentPosition = 0;
     private int streetLength = 500;
-    public MovementDataStructure MoveForward(){
+    public ParkingStatus MoveForward(){
         
         if(currentPosition < streetLength) {
             currentPosition++;
         }
-        return new MovementDataStructure(currentPosition);  
+        return new ParkingStatus(currentPosition);  
         
         
         /**
@@ -20,6 +20,7 @@ public class ParkingAssistant{
 
         */
     //}
+    }
     
     public ParkingAssistant(int currentPosition) {
         this.currentPosition = currentPosition;
@@ -75,11 +76,11 @@ public class ParkingAssistant{
     //     */
      
 
-        public MovementDataStructure MoveBackward(){
+        public ParkingStatus MoveBackward(){
             if(currentPosition > 0) {
                 currentPosition--;
             }
-            return new MovementDataStructure(currentPosition);
+            return new ParkingStatus(currentPosition);
 
          
         //  Description: The same as MoveForward above; only it moves the car 1 meter backwards.

@@ -1,4 +1,6 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 
 
@@ -7,7 +9,7 @@ public class ParkingAssistantTest {
     @Test
     public void testMoveForward() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
-        MovementDataStructure result = parkingAssistant.MoveForward();
+        ParkingStatus result = parkingAssistant.MoveForward();
 
         assertEquals(1, result.getcurrentPosition(), "The car should have moved forward by 1 meter.");
 
@@ -16,7 +18,7 @@ public class ParkingAssistantTest {
     @Test  
     public void testMoveForwardAtEndOfStreet() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(500);
-        MovementDataStructure result = parkingAssistant.MoveForward();
+        ParkingStatus result = parkingAssistant.MoveForward();
 
         assertEquals(500, result.getcurrentPosition(), "The car should not move forward beyond the end of the street.");
 
@@ -63,7 +65,7 @@ public class ParkingAssistantTest {
     @Test
     public void testMoveBackward() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(1);
-        MovementDataStructure result = parkingAssistant.MoveBackward();
+        ParkingStatus result = parkingAssistant.MoveBackward();
 
         assertEquals(0, result.getcurrentPosition(), "The car should have moved backward by 1 meter.");
     }
@@ -71,7 +73,7 @@ public class ParkingAssistantTest {
     @Test
     public void testMoveBackwardAtStartOfStreet() {
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
-        MovementDataStructure result = parkingAssistant.MoveBackward();
+        ParkingStatus result = parkingAssistant.MoveBackward();
 
         assertEquals(0, result.getcurrentPosition(), "The car should not move backward beyond the start of the street.");
     }
