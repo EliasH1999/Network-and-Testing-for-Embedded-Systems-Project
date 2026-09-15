@@ -1,13 +1,14 @@
 import java.util.Arrays;
 public class ParkingAssistant{
-    private int currentPosition = 0;
+    private int position = 0;
     private int streetLength = 500;
+    private boolean parked = false;
     public ParkingStatus MoveForward(){
         
-        if(currentPosition < streetLength) {
-            currentPosition++;
+        if(position < streetLength) {
+            position++;
         }
-        return new ParkingStatus(currentPosition);  
+        return new ParkingStatus(position);  
         
         
         /**
@@ -22,8 +23,8 @@ public class ParkingAssistant{
     //}
     }
     
-    public ParkingAssistant(int currentPosition) {
-        this.currentPosition = currentPosition;
+    public ParkingAssistant(int position) {
+        this.position = position;
     }
     public int isEmpty(int [] sensor1, int [] sensor2){
 
@@ -77,10 +78,10 @@ public class ParkingAssistant{
      
 
         public ParkingStatus MoveBackward(){
-            if(currentPosition > 0) {
-                currentPosition--;
+            if(position > 0) {
+                position--;
             }
-            return new ParkingStatus(currentPosition);
+            return new ParkingStatus(position);
 
          
         //  Description: The same as MoveForward above; only it moves the car 1 meter backwards.
@@ -93,32 +94,63 @@ public class ParkingAssistant{
 
     // public ??? Park(){
        
-    //     /**
-    //     Description: It performs a pre-programmed reverse parallel parking maneuver, if it is already positioned at an empty parking space stretch, 
-    //     or moves the car forwards towards the end of the street until such a stretch is detected, and then parks it. 
-    //     Pre-condition:
-    //     Post-condition:
-    //     Test-cases:
-    //     */
+    /*
+    Description: Parks the car in the first available 5-metre space. If already at the end
+                 of such a space, parks immediately; otherwise moves forward until one is
+                 found or the end of the street is reached.
+          
+    Pre-condition: 5 metre space is available in the street.
+
+    Post-condition:
+        Let parkable(p) = p >= 5 and parkingPlaces[p-4..p] all true.
+        If parked: state unchanged.
+        If parkable(position): parked' = true, position unchanged.
+        Otherwise: moveForward() is applied repeatedly until parkable(position)
+                or position == 500. If parkable, parked' = true; else
+                parked' = false and position' = 500.
+
+    Test-cases:
+        Test1:  Already at end of a free stretch: parks without moving
+        Test2:  Stretch ahead --> moves forward to its end and parks
+        Test3:  Occupied metre inside the window: continues past it, parks at the next stretch
+        Test4:  No stretch anywhere: ends at 500, unparked
+        Test5:  Stretch is the last 5 metres (496–500): parks at 500
+        Test6:  Already parked --> nothing happens
+        Test7:  Called at 0 with free street: parks at 5
+        Test8:  At 500 unparked with no stretch --> nothing happens
+    */
     // }
 
     // public ??? Unpark(){
 
-    //     /**
-    //     Description: It moves the car forward (and to left) to front of the parking place, if it is parked.
-    //     Pre-condition:
-    //     Post-condition:
-    //     Test-cases:
-    //     */
+    /*
+            Description: It moves the car forward (and to left) to front of the parking place, if it is parked.
+            Pre-condition: None.
+            Post-condition: If the car was parked: parked becomes false; position and parkingPlaces are unchanged. If the car was not parked: nothing changes.
+            Test-cases:
+                Test1:  Parked car becomes unparked, position unchanged
+                Test2:  Car is not parked --> nothing happens
+                Test3:  After unparking, moveForward works again
+                Test4:  Parking record unchanged by unparking
+    */
     // }
 
-    // public ??? Wherels(){
-    //     // This method returns the current position of the car in the street as well as its (un)parked status.
+    public CarStatus Wherels(){
+    // This method returns the current position of the car in the street as well as its (un)parked status.
+        
+    CarStatus carStatus = new CarStatus(position, parked);
+        return carStatus;
 
-    //     /**
-    //     Pre-condition:
-    //     Post-condition:
-    //     Test-cases:
-    //     */
-    // } 
+        /*
+        Pre-condition: None.
+
+        Post-condition: Returns CarStatus(position, parked). No state changes.
+
+        Test-cases:
+            Test1:  Initial state: (0, false)
+            Test2:  After some moves: correct position, false
+            Test3:  After park(): correct position, true
+            Test4:  After unPark(): correct position, false
+        */
+    } 
     }
