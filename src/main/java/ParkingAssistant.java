@@ -4,7 +4,7 @@ import java.util.List;
 public class ParkingAssistant{
     private int position = 0;
     private int streetLength = 500;
-<<<<<<< HEAD
+    private List<Boolean> parkingPlaces = new ArrayList<Boolean>();
     private boolean parked = false;
 
     /* Vet inte om detta behövs
@@ -21,18 +21,13 @@ public class ParkingAssistant{
         if(position < streetLength) {
             position++;
         }
-<<<<<<< HEAD
-        return new ParkingStatus(position);  
-        
-=======
 
         int distance = isEmpty();
         boolean free = distance >= 100;
 
         parkingPlaces.add(free);
             
-        return new ParkingStatus(currentPosition, parkingPlaces);  
->>>>>>> TestMethods
+        return new ParkingStatus(position, parkingPlaces);  
         
 
 
@@ -67,10 +62,11 @@ public class ParkingAssistant{
         int[] readings1 = new int[5];
         int[] readings2 = new int[5];
 
+        /*
         for(int i = 0; i < 5; i++){
-            readings1[i] = sensor1.read();
-            readings2[i] = sensor2.read();
-        }
+            readings1[i] = sensor1.checkSensor()[i];
+            readings2[i] = sensor2.checkSensor()[i];
+        }*/
 
         Arrays.sort(readings1);
         Arrays.sort(readings2);
