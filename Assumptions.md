@@ -13,8 +13,7 @@
 - If the car is already at 500 (end of the street), the call does nothing, position stays 500, no exception is thrown, and the returned data structure reflects the unchanged state
 - The car cannot be moved while parked, and the call is ignored and the unchanged state is returned
 - Calls isEmpty() exactly once after moving and records the result for the new position. Position 0 is therefore never sensed; positions 1-500 are sensed as the car reaches them. 
-- Returns a ParkingStatus contaning the position and the parking record. The returned object is a copy
--Returns a ParkingStatus containing the position and the parking record. The returned object is a copy, so later moves do not alter an earlier result.
+- Returns a ParkingStatus containing the position and the parking record. The returned object is a copy, so later moves do not alter an earlier result.
 
 # IsEmpty
 - Sampels each sensor 5 times per call (10 readings in total.)
