@@ -1,3 +1,4 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
@@ -36,15 +37,13 @@ public class ParkingAssistantTest {
     }
 
     @Test
-    public void testWherels() {
-        // Test the Wherels method
-        // Add assertions to verify the expected behavior
+    public void testWhereIs() {
+    ParkingAssistant assistant = new ParkingAssistant();
+    Car testCar = new Car(250, true);
 
-        ParkingAssistant assistant = new ParkingAssistant();
+    Car result = assistant.WhereIs(testCar);
 
-        ParkingAssistant.CarStatus status = assistant.Wherels();
-
-        assertTrue(status.getPosition() >= 0 && status.getPosition() <= 500);
-
-    }
+    assertEquals(250, result.getPosition());
+    assertTrue(result.isParked());
+}
 }

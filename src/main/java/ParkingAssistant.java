@@ -1,25 +1,7 @@
 public class ParkingAssistant{
     
-    public class CarStatus{
-        private int position;
-        private boolean parked;
-
-        public CarStatus(int position, boolean parked){
-
-            this.position = position;
-            this.parked = parked;
-
-        }
-
-         public int getPosition() {
-            return position;
-        }
-
-        public boolean isParked() {
-            return parked;
-        }
-    }
     
+
     //public ??? MoveForward(){
         // This method moves the car 1 meter forward, queries the two sensors through the isEmpty method described below and returns a data structure that contains the current position of the car, 
         // and the situation of the detected parking places up to now. The car cannot be moved forward beyond the end of the street.
@@ -76,7 +58,9 @@ public class ParkingAssistant{
         */
     //}
     
-    public CarStatus Wherels(){
+    // Kommer behöva skikca in ett objekt som innehåller positionen och om bilen är parkerad eller inte.
+
+    public Car WhereIs(Car car) {
         // This method returns the current position of the car in the street as well as its (un)parked status.
 
         // Street 500 m long, (un)parked is true or false 
@@ -86,6 +70,6 @@ public class ParkingAssistant{
         Post-condition:
         Test-cases:
         */
-       return new CarStatus(0, false); // Placeholder return value  
+       return car; // Placeholder return value  
     }
 }
