@@ -9,7 +9,7 @@ public class ParkingStatus {
     private List<Boolean> parkingPlaces = new ArrayList<Boolean>();
     public ParkingStatus(int currentPosition, List<Boolean> parkingPlaces) {
         this.currentPosition = currentPosition;
-        this.parkingPlaces = parkingPlaces;
+        this.parkingPlaces = new ArrayList<>(parkingPlaces);
     }
     public int getcurrentPosition() {
         return currentPosition;
