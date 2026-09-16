@@ -5,22 +5,31 @@ import org.junit.jupiter.api.Test;
 
 public class ParkingAssistantTest {
 
-
-    // test cases for the moveForward method
     @Test
-    public void testMoveForward() { // TC 1: first move from 0
-        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+    public void testMoveForwardFromMiddleofStreet() { // TC 1: normal move from the middle of the street
+        ParkingAssistant parkingAssistant = new ParkingAssistant(250);
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
         parkingAssistant.setSensorReadings(sensor1, sensor2);
         ParkingStatus result = parkingAssistant.MoveForward();
 
+        assertEquals(251, result.getcurrentPosition(), "The car should have moved forward by 1 meter from the middle of the street.");
+    }
+
+    // test cases for the moveForward method
+    @Test
+    public void testMoveForward() { // TC 2: first move from 0
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        ParkingStatus result = parkingAssistant.MoveForward();
         assertEquals(1, result.getcurrentPosition(), "The car should have moved forward by 1 meter.");
 
     }
 
     @Test  
-    public void testMoveForwardAtEndOfStreet() { // TC 2: last move from 500
+    public void testMoveForwardAtEndOfStreet() { // TC 3: last move from 500
         ParkingAssistant parkingAssistant = new ParkingAssistant(500);
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
@@ -30,17 +39,6 @@ public class ParkingAssistantTest {
         assertEquals(500, result.getcurrentPosition(), "The car should not move forward beyond the end of the street.");
 
         
-    }
-
-    @Test
-    public void testMoveForwardFromMiddleofStreet() { // TC 3: normal move from the middle of the street
-        ParkingAssistant parkingAssistant = new ParkingAssistant(250);
-        int[] sensor1 = {100, 120, 130, 140, 145};
-        int[] sensor2 = {110, 115, 125, 135, 140};
-        parkingAssistant.setSensorReadings(sensor1, sensor2);
-        ParkingStatus result = parkingAssistant.MoveForward();
-
-        assertEquals(251, result.getcurrentPosition(), "The car should have moved forward by 1 meter from the middle of the street.");
     }
 
     // @Test
@@ -64,7 +62,7 @@ public class ParkingAssistantTest {
         parkingAssistant.setSensorReadings(sensor1, sensor2);
         ParkingStatus result = parkingAssistant.MoveForward();
 
-        assertTrue(result.getparkingPlaces().get(0), "The first parking place should be recorded as free (true).");
+        assertTrue(result.getparkingPlaces().get(1), "The first parking place should be recorded as free (true).");
         assertEquals(1, result.getcurrentPosition(), "The car should have moved forward by 1 meter. Free meter");
     }
 

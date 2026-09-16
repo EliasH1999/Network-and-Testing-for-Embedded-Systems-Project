@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Collections;
 public class ParkingAssistant{
     private int position = 0;
-    private int streetLength = 500;
-    private List<Boolean> parkingPlaces = new ArrayList<Boolean>();
+    private static final int streetLength = 500;
+    private List<Boolean> parkingPlaces = new ArrayList<>(Collections.nCopies(streetLength + 1, false)); 
     private boolean parked = false;
 
     /* Vet inte om detta behövs
@@ -26,19 +27,15 @@ public class ParkingAssistant{
 
 
     public ParkingStatus MoveForward(){
-        
-        if(position < streetLength) {
+
+
+        if(position < streetLength && !parked){
             position++;
+            parkingPlaces.set(position, isEmpty() >= 100);
         }
-
-        int distance = isEmpty();
-        boolean free = distance >= 100;
-
-        parkingPlaces.add(free);
             
         return new ParkingStatus(position, parkingPlaces);  
         
-
 
         /**
         Description: This method moves the car 1 meter forward, queries the two sensors through the isEmpty method described below and returns a data structure 
