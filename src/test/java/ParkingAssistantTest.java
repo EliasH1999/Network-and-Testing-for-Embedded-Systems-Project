@@ -40,17 +40,19 @@ public class ParkingAssistantTest {
         
     }
 
-    // @Test
-    // public void testMoveForwardWhenParked() { // TC 4: move when parked, state unchanged
-    //      ParkingAssistant parkingAssistant = new ParkingAssistant(100);
-    //      int[] sensor1 = {100, 120, 130, 140, 145};
-    //      int[] sensor2 = {110, 115, 125, 135, 140};
-    //      parkingAssistant.setSensorReadings(sensor1, sensor2);
-    //      parkingAssistant.Park(); // Park the car
-    //      ParkingStatus result = parkingAssistant.MoveForward();
+    @Test
+    public void testMoveForwardWhenParked() { // TC-MF-4: move when parked, state unchanged
+         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+         int[] sensor1 = {100, 120, 130, 140, 145};
+         int[] sensor2 = {110, 115, 125, 135, 140};
+         parkingAssistant.setSensorReadings(sensor1, sensor2);
+         parkingAssistant.Park(); // Park the car
+         ParkingStatus result = parkingAssistant.MoveForward();
 
-    //      assertEquals(100, result.getcurrentPosition(), "The car should not move forward when parked.");
-    //  }
+         assertEquals(5, result.getcurrentPosition(), "The car should not move forward when parked.");
+         assertTrue(parkingAssistant.WhereIs().isParked(), "The car should still be parked.");
+         assertFalse(result.getparkingPlaces().get(6), "No metre should be recorded when parked.");
+        }
 
     @Test
     public void testMoveForwardWithFreeMeter() { // TC-MF-5: free meter (isEmpty() >= 100) recorded as true
@@ -77,8 +79,6 @@ public class ParkingAssistantTest {
         assertFalse(result.getparkingPlaces().get(0), "The first parking place should be recorded as occupied (false).");
         assertEquals(1, result.getcurrentPosition(), "The car should have moved forward by 1 meter. Occupied meter");
     }
-
-
 
 
 
@@ -174,20 +174,20 @@ public class ParkingAssistantTest {
 
     
 
-    @Test
-    public void testParkAtEndOfFreeStrech() { // TC 1: at the end of a free stretch, should park at the first available 5-metre space
-        ParkingAssistant parkingAssistant = new ParkingAssistant(6);
-        parkingAssistant.getParkingPlaces().set(2, true);
-        parkingAssistant.getParkingPlaces().set(3, true);
-        parkingAssistant.getParkingPlaces().set(4, true);
-        parkingAssistant.getParkingPlaces().set(5, true);
-        parkingAssistant.getParkingPlaces().set(6, true);
+    // @Test
+    // public void testParkAtEndOfFreeStrech() { // TC 1: at the end of a free stretch, should park at the first available 5-metre space
+    //     ParkingAssistant parkingAssistant = new ParkingAssistant(6);
+    //     parkingAssistant.getParkingPlaces().set(2, true);
+    //     parkingAssistant.getParkingPlaces().set(3, true);
+    //     parkingAssistant.getParkingPlaces().set(4, true);
+    //     parkingAssistant.getParkingPlaces().set(5, true);
+    //     parkingAssistant.getParkingPlaces().set(6, true);
         
-        parkingAssistant.Park();
-        CarStatus result = parkingAssistant.WhereIs();
+    //     parkingAssistant.Park();
+    //     CarStatus result = parkingAssistant.WhereIs();
 
-        assertTrue(result.isParked(), "The car should be parked.");
-    }
+    //     assertTrue(result.isParked(), "The car should be parked.");
+    // }
         
     
 

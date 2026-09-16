@@ -155,7 +155,6 @@ public class ParkingAssistant{
 
      public void Park(){
 
-
     while(position <= streetLength && !parked) {
         boolean parkable = position >= 5;
         
@@ -218,7 +217,7 @@ public class ParkingAssistant{
     public CarStatus WhereIs(){
     // This method returns the current position of the car in the street as well as its (un)parked status.
         
-    CarStatus carStatus = new CarStatus(position, parked);
+        CarStatus carStatus = new CarStatus(position, parked);
         return carStatus;
 
         /*
