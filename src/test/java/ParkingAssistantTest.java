@@ -81,7 +81,22 @@ public class ParkingAssistantTest {
         assertEquals(1, result.getcurrentPosition(), "The car should have moved forward by 1 meter. Occupied meter");
     }
 
+    @Test
+    public void testMoveForwardStatusUnchangedByLaterMove(){ //TC-MF-7: 
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
 
+        ParkingStatus a = parkingAssistant.MoveForward();
+        ParkingStatus b = parkingAssistant.MoveForward();
+
+        assertEquals(1, a.getcurrentPosition(), "The car should have moved forward by 1 meter on the first move.");
+        assertFalse(a.getparkingPlaces().get(2), "First status should not know about metre 2.");
+        assertEquals(2, b.getcurrentPosition(), "The car should have moved forward by 1 more meter on the second move.");
+        assertTrue(b.getparkingPlaces().get(2), "Second status should  know about metre 2.");
+        assertTrue(b.getparkingPlaces().get(1), "Second status should know about metre 1.");
+    }
 
 
     // Test for isEmpty() method
