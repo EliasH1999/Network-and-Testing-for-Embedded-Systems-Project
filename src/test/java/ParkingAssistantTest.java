@@ -55,6 +55,17 @@ public class ParkingAssistantTest {
         }
 
     @Test
+    public void testIfCarCanPark() {
+
+        ParkingAssistant parkingAssistant = new ParkingAssistant(10);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.Park(); // Park the car
+    }
+   
+    
+    @Test
     public void testMoveForwardWithFreeMeter() { // TC-MF-5: free meter (isEmpty() >= 100) recorded as true
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {100, 120, 130, 140, 145};

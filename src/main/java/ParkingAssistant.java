@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 public class ParkingAssistant{
     private int position = 0;
     private static final int streetLength = 500;
@@ -201,7 +201,11 @@ public class ParkingAssistant{
     */
     }
 
-    // public ??? Unpark(){
+    public void Unpark(){
+        
+        if(parked) {
+            parked = false;
+        }
 
     /*
             Description: It moves the car forward (and to left) to front of the parking place, if it is parked.
@@ -213,7 +217,7 @@ public class ParkingAssistant{
                 Test3:  After unparking, moveForward works again
                 Test4:  Parking record unchanged by unparking
     */
-    // }
+    }
 
     public CarStatus WhereIs(){
     // This method returns the current position of the car in the street as well as its (un)parked status.
