@@ -154,23 +154,12 @@ public class ParkingAssistant{
     
 
      public void Park(){
+    boolean parkable = true;
 
-    while(position <= streetLength && !parked) {
-        boolean parkable = position >= 5;
-        
-        if(parkable){
-            for(int i = position - 4; i <= position; i++) {
-                if(!parkingPlaces.get(i)) {
-                    parkable = false;
-                    break;
-                }
-            }
-        } if(parkable) {
-            parked = true;
-        } else if(position < streetLength) {
-            MoveForward();
-        } else {
-            break; // Reached the end of the street
+    for(int i = position; i < position + 5 && i < streetLength; i++) {
+        if(i >= parkingPlaces.size() || !parkingPlaces.get(i)) {
+            parkable = false;
+            break;
         }
     }
     /*
