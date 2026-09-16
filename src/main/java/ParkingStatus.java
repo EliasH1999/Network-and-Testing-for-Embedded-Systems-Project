@@ -19,6 +19,11 @@ public class ParkingStatus {
         return new ArrayList<>(parkingPlaces);
     }
 
+    public void setparkingPlaces(int index, boolean value) {
+        parkingPlaces.set(index, value);
+    }
+
+
     /*
     Description: Returns the current position of the car as well as the parking record.
     Pre-condition: Parking places it non null and has length of 501

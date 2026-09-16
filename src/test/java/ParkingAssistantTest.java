@@ -178,16 +178,14 @@ public class ParkingAssistantTest {
     @Test
     public void testParkAtEndOfFreeStrech() { // TC 1: at the end of a free stretch, should park at the first available 5-metre space
         ParkingAssistant parkingAssistant = new ParkingAssistant(6);
-        parkingAssistant.getParkingPlaces().set(2, true);
-        parkingAssistant.getParkingPlaces().set(3, true);
-        parkingAssistant.getParkingPlaces().set(4, true);
-        parkingAssistant.getParkingPlaces().set(5, true);
-        parkingAssistant.getParkingPlaces().set(6, true);
-        
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
         parkingAssistant.Park();
         CarStatus result = parkingAssistant.WhereIs();
 
         assertTrue(result.isParked(), "The car should be parked.");
+        assertEquals(11, result.getPosition(), "The car should be parked at position 6.");
     }
         
     
