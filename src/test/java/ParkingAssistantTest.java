@@ -54,51 +54,6 @@ public class ParkingAssistantTest {
          assertFalse(result.getparkingPlaces().get(6), "No metre should be recorded when parked.");
         }
 
-    @Test
-
-    public void testIfCarCanUnParkwhenParked() {
-        ParkingAssistant parkingAssistant = new ParkingAssistant(10);
-        int[] sensor1 = {100, 120, 130, 140, 145};
-        int[] sensor2 = {110, 115, 125, 135, 140};
-        parkingAssistant.setSensorReadings(sensor1, sensor2);
-        parkingAssistant.Park(); // Park the car
-        parkingAssistant.Unpark(); // Unpark the car
-        assertFalse(parkingAssistant.WhereIs().isParked(), "The car should be unparked after calling Unpark().");
-    }
-   
-    @Test
-    public void testUnParkWhenNotParked() {
-        ParkingAssistant parkingAssistant = new ParkingAssistant(10);
-        int[] sensor1 = {100, 120, 130, 140, 145};
-        int[] sensor2 = {110, 115, 125, 135, 140};
-        parkingAssistant.setSensorReadings(sensor1, sensor2);
-        parkingAssistant.Unpark(); // Unpark the car when it's not parked
-        assertFalse(parkingAssistant.WhereIs().isParked(), "The car should remain unparked when Unpark() is called while not parked.");
-    }
-    
-    @Test
-    public void testMoveForwardAfterUnparking() {
-        ParkingAssistant parkingAssistant = new ParkingAssistant(10);
-        int[] sensor1 = {100, 120, 130, 140, 145};
-        int[] sensor2 = {110, 115, 125, 135, 140};
-        parkingAssistant.setSensorReadings(sensor1, sensor2);
-        parkingAssistant.Park(); // Park the car
-        parkingAssistant.Unpark(); // Unpark the car
-        ParkingStatus result = parkingAssistant.MoveForward();
-        assertEquals(11, result.getcurrentPosition(), "The car should move forward by 1 meter after unparking.");
-    }
-
-    @Test
-    public void testParkingRecordUnchangedAfterUnparking() {
-        ParkingAssistant parkingAssistant = new ParkingAssistant(10);
-        int[] sensor1 = {100, 120, 130, 140, 145};
-        int[] sensor2 = {110, 115, 125, 135, 140};
-        parkingAssistant.setSensorReadings(sensor1, sensor2);
-        parkingAssistant.Park(); // Park the car
-        parkingAssistant.Unpark(); // Unpark the car
-        ParkingStatus result = parkingAssistant.MoveForward();
-        assertTrue(result.getparkingPlaces().get(10), "The parking record should remain unchanged after unparking.");
-    }
 
     @Test
     public void testMoveForwardWithFreeMeter() { // TC-MF-5: free meter (isEmpty() >= 100) recorded as true
@@ -219,7 +174,7 @@ public class ParkingAssistantTest {
 
 
     
-
+    // Test cases for the Park method
     @Test
     public void testParkAtEndOfFreeStrech() { // TC 1: at the end of a free stretch, should park at the first available 5-metre space
         ParkingAssistant parkingAssistant = new ParkingAssistant(6);
@@ -299,14 +254,53 @@ public class ParkingAssistantTest {
         assertFalse(result.isParked(), "The car should not be parked when there is no free space.");
     }
 
+
+
+    // Test cases for the Unpark method
     @Test
-    public void testUnpark() {
-        // Test the Unpark method
-        // Add assertions to verify the expected behavior
+    public void testIfCarCanUnParkwhenParked() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(10);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.Park(); // Park the car
+        parkingAssistant.Unpark(); // Unpark the car
+        assertFalse(parkingAssistant.WhereIs().isParked(), "The car should be unparked after calling Unpark().");
+    }
+   
+    @Test
+    public void testUnParkWhenNotParked() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(10);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.Unpark(); // Unpark the car when it's not parked
+        assertFalse(parkingAssistant.WhereIs().isParked(), "The car should remain unparked when Unpark() is called while not parked.");
+    }
+    
+    @Test
+    public void testMoveForwardAfterUnparking() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(10);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.Park(); // Park the car
+        parkingAssistant.Unpark(); // Unpark the car
+        ParkingStatus result = parkingAssistant.MoveForward();
+        assertEquals(17, result.getcurrentPosition(), "The car should move forward by 1 meter after unparking.");
     }
 
-        // Test the Wherels method
-        // Add assertions to verify the expected behavior
+    @Test
+    public void testParkingRecordUnchangedAfterUnparking() {
+        ParkingAssistant parkingAssistant = new ParkingAssistant(10);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.Park(); // Park the car
+        parkingAssistant.Unpark(); // Unpark the car
+        ParkingStatus result = parkingAssistant.MoveForward();
+        assertTrue(result.getparkingPlaces().get(10), "The parking record should remain unchanged after unparking.");
+    }
 
     
     // test for WhereIs() method
