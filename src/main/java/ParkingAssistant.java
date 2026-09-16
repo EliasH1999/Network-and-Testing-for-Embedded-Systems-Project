@@ -153,8 +153,15 @@ public class ParkingAssistant{
         }
     
 
-    // public ??? Park(){
-       
+     public void Park(){
+    boolean parkable = true;
+
+    for(int i = position; i < position + 5 && i < streetLength; i++) {
+        if(i >= parkingPlaces.size() || !parkingPlaces.get(i)) {
+            parkable = false;
+            break;
+        }
+    }
     /*
     Description: Parks the car in the first available 5-metre space. If already at the end
                  of such a space, parks immediately; otherwise moves forward until one is
@@ -180,7 +187,7 @@ public class ParkingAssistant{
         Test7:  Called at 0 with free street: parks at 5
         Test8:  At 500 unparked with no stretch --> nothing happens
     */
-    // }
+    }
 
     // public ??? Unpark(){
 

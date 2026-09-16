@@ -175,11 +175,17 @@ public class ParkingAssistantTest {
     
 
     @Test
-    public void testPark() {
-        // Test the Park method
-        // Add assertions to verify the expected behavior
-        
+    public void testParkAtEndOfFreeStrech() { // TC 1: at the end of a free stretch, should park at the first available 5-metre space
+        ParkingAssistant parkingAssistant = new ParkingAssistant(6);
+        ParkingStatus result = parkingAssistant.Park();
+
+        assertEquals(10, result.getcurrentPosition(), "The car should have parked at the first available 5-metre space.");  
+        for(int i = 6; i < 11; i++) {
+            assertFalse(result.getparkingPlaces().get(i), "The parking places from 6 to 10 should be marked as occupied (false).");
+        }
     }
+        
+    
 
     @Test
     public void testUnpark() {
