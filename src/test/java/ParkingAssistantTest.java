@@ -222,7 +222,41 @@ public class ParkingAssistantTest {
         assertTrue(b.getparkingPlaces().get(3), "Position 3 should be free since it is not resensed");
     }
 
+    @Test 
+    public void testMovebackwardToZero(){ //TC-MB-5: 
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0); 
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.MoveForward();
+        ParkingStatus a = parkingAssistant.MoveBackward();
 
+        assertEquals(0, a.getcurrentPosition(), "A should have moved back to position 0");
+    }
+
+
+
+    @Test
+    public void testMoveBackwardStatusUnchangedByLaterMove() { // TC-MB-6: returned status is a snapshot
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.MoveForward();
+        parkingAssistant.MoveForward();
+        parkingAssistant.MoveForward();                                 // at 3, metres 1–3 free
+
+        int[] sensor1_2 = {99, 99, 99, 99, 99};
+        int[] sensor2_2 = {99, 99, 99, 99, 99};
+        parkingAssistant.setSensorReadings(sensor1_2, sensor2_2);
+        ParkingStatus a = parkingAssistant.MoveBackward();              // at 2, metre 2 re-sensed occupied
+        ParkingStatus b = parkingAssistant.MoveBackward();              // at 1, metre 1 re-sensed occupied
+
+        assertEquals(2, a.getcurrentPosition(), "First backward status should still say position 2.");
+        assertTrue(a.getparkingPlaces().get(1), "First status was taken before metre 1 was re-sensed.");
+        assertEquals(1, b.getcurrentPosition());
+        assertFalse(b.getparkingPlaces().get(1), "Second status has the new reading for metre 1.");
+}
     
     // Test cases for the Park method
     @Test
