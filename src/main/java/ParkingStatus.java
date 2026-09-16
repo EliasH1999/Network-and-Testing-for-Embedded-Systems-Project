@@ -19,6 +19,7 @@ public class ParkingStatus {
         return new ArrayList<>(parkingPlaces);
     }
 
+    // Används inte?
     public void setparkingPlaces(int index, boolean value) {
         parkingPlaces.set(index, value);
     }
