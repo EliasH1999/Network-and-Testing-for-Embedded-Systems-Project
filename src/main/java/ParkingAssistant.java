@@ -126,9 +126,10 @@ public class ParkingAssistant{
      
     
         public ParkingStatus MoveBackward(){
-            if(position > 0) {
-                position--;
-            }
+            if(position > 0 && !parked){
+            position--;
+            parkingPlaces.set(position, isEmpty() >= 100);
+        }
             return new ParkingStatus(position, parkingPlaces);
 
          

@@ -174,18 +174,53 @@ public class ParkingAssistantTest {
         int[] sensor2 = {110, 115, 125, 135, 140};
         parkingAssistant.setSensorReadings(sensor1, sensor2);
         ParkingStatus result = parkingAssistant.MoveBackward();
-
         assertEquals(249, result.getcurrentPosition(), "The car should have moved backward by 1 meter from the middle of the street.");
     }
 
      @Test
     public void testMoveBackwardAtStartOfStreet() { // TC-MB-2: first move from 0
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
         ParkingStatus result = parkingAssistant.MoveBackward();
-
         assertEquals(0, result.getcurrentPosition(), "The car should not move backward beyond the start of the street.");
     }
 
+    @Test 
+    public void testMoveBackwardWhileParked(){ //TC-MB-3: while parked, state unchanged
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.Park();
+
+        ParkingStatus result = parkingAssistant.MoveBackward();
+        assertEquals(5, result.getcurrentPosition(), "The car should not move backward while parked.");
+    }
+
+    @Test 
+    public void testArrivingMeterSensedAndEarlierReadingOverwritten(){ //TC-MB-4: arriving meter sensed and earlier reading overwritten
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0); 
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.MoveForward();
+        parkingAssistant.MoveForward();
+        ParkingStatus a = parkingAssistant.MoveForward();
+        int[] sensor1_2 = {99, 99, 99, 99, 99};
+        int[] sensor2_2 = {99, 99, 99, 99, 99};
+        parkingAssistant.setSensorReadings(sensor1_2, sensor2_2);
+        parkingAssistant.MoveBackward();
+        parkingAssistant.MoveBackward();
+        ParkingStatus b = parkingAssistant.MoveBackward();
+
+        assertEquals(3, a.getcurrentPosition(), "A should have moved to position 3");
+        assertEquals(0, b.getcurrentPosition(), "B should have moved back to position 0");
+        assertTrue(a.getparkingPlaces().get(2), "Position 2 should be free when first sensed");
+        assertFalse(b.getparkingPlaces().get(2), "Position 2 should be occupied after moving back");
+        assertTrue(b.getparkingPlaces().get(3), "Position 3 should be free since it is not resensed");
+    }
 
 
     
