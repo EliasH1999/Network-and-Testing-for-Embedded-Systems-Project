@@ -204,7 +204,6 @@ public class ParkingAssistant{
     public void Unpark(){
         
         if(parked) {
-            position++;
             parked = false;
         }
 

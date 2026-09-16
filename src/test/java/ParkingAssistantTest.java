@@ -287,7 +287,7 @@ public class ParkingAssistantTest {
         parkingAssistant.Park(); // Park the car
         parkingAssistant.Unpark(); // Unpark the car
         ParkingStatus result = parkingAssistant.MoveForward();
-        assertEquals(17, result.getcurrentPosition(), "The car should move forward by 1 meter after unparking.");
+        assertEquals(16, result.getcurrentPosition(), "The car should move forward by 1 meter after unparking.");
     }
 
     @Test
@@ -298,8 +298,12 @@ public class ParkingAssistantTest {
         parkingAssistant.setSensorReadings(sensor1, sensor2);
         parkingAssistant.Park(); // Park the car
         parkingAssistant.Unpark(); // Unpark the car
-        ParkingStatus result = parkingAssistant.MoveForward();
-        assertTrue(result.getparkingPlaces().get(10), "The parking record should remain unchanged after unparking.");
+        parkingAssistant.Park(); // Park the car
+
+
+        CarStatus result = parkingAssistant.WhereIs();
+
+        assertEquals(result.isParked(), true, "The car should be parked after calling Park() again.");
     }
 
     

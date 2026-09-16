@@ -23,6 +23,10 @@ public class ParkingStatus {
         parkingPlaces.set(index, value);
     }
 
+    public ParkingStatus getparkingStatus() {
+        return new ParkingStatus(currentPosition, parkingPlaces);
+    }
+
 
     /*
     Description: Returns the current position of the car as well as the parking record.
