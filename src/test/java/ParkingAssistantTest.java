@@ -232,8 +232,72 @@ public class ParkingAssistantTest {
         assertTrue(result.isParked(), "The car should be parked.");
         assertEquals(11, result.getPosition(), "The car should be parked at position 6.");
     }
+
+    @Test
+    public void testParkStretchAhead(){
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.Park();
+        CarStatus result = parkingAssistant.WhereIs();
+
+        assertTrue(result.isParked(), "The car should be parked.");
+        assertEquals(5, result.getPosition(), "The car should be parked at position 5.");
+    }
+    @Test
+    public void testParkOccupiedMeter(){
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {20, 30, 40, 45, 50};
+        int[] sensor2 = {120, 130, 140, 150, 160};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.Park();
+        CarStatus result = parkingAssistant.WhereIs();
         
+        assertFalse(result.isParked(), "The car should not be parked.");
+        assertEquals(500, result.getPosition(), "The car should remain at position 0.");
+    }
     
+    @Test
+    public void testParkStretchLastFiveMeters(){
+        ParkingAssistant parkingAssistant = new ParkingAssistant(495);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.Park();
+        CarStatus result = parkingAssistant.WhereIs();
+
+        assertTrue(result.isParked(), "The car should be parked.");
+        assertEquals(500, result.getPosition(), "The car should be parked at position 500.");
+    }
+    
+    @Test
+    public void testParkAlreadyParked(){
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.Park();
+        CarStatus resultBeforeUnpark = parkingAssistant.WhereIs();
+        
+        assertTrue(resultBeforeUnpark.isParked(), "The car should be parked.");
+        
+        parkingAssistant.Park();
+        CarStatus resultAfterUnpark = parkingAssistant.WhereIs();
+        
+        assertTrue(resultAfterUnpark.isParked(), "The car should still be parked after attempting to park again.");
+    }
+
+    @Test
+    public void testParkNoFreeSpace(){
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {10, 20, 30, 40, 50};
+        int[] sensor2 = {15, 25, 35, 45, 55};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.Park();
+        CarStatus result = parkingAssistant.WhereIs();
+        assertFalse(result.isParked(), "The car should not be parked when there is no free space.");
+    }
 
     @Test
     public void testUnpark() {
