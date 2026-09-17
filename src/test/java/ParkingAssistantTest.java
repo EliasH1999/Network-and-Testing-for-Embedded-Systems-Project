@@ -331,7 +331,7 @@ public class ParkingAssistantTest {
         assertEquals(5, result.getPosition(), "The car should be parked at position 5.");
     }
     @Test
-    public void testParkOccupiedMeter(){ //TC-PK-3
+    public void testParkFullyOccupiedStreet(){ //TC-PK-3
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {20, 30, 40, 45, 50};
         int[] sensor2 = {120, 130, 140, 150, 160};
@@ -484,7 +484,8 @@ public class ParkingAssistantTest {
 
         CarStatus afterParkAndUnpark = parkingAssistant.WhereIs();
         assertTrue(afterParkAndUnpark.isParked(), "The car should be parked after calling Park() again.");
-        }
+        assertEquals(afterParkAndUnpark.isParked(), true, "The car should be parked after calling Park() again.");
+    }
 
     
     // test for WhereIs() method

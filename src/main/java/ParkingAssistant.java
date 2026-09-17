@@ -25,12 +25,12 @@ public class ParkingAssistant{
     public ParkingStatus MoveForward(){
 
 
-        if(position < streetLength && !parked){
-            position++;
-            parkingPlaces.set(position, isEmpty() >= 100);
+        if(position < streetLength && !parked){                 // TC-MF-3, TC-MF-4
+            position++;                                         // TC-MF-1, TC-MF-2
+            parkingPlaces.set(position, isEmpty() >= 100);      // TC-MF-5, TC-MF-6
         }
             
-        return new ParkingStatus(position, parkingPlaces);  
+        return new ParkingStatus(position, parkingPlaces);      // TC-MF-1, TC-MF-7
         
 
         /**
@@ -41,20 +41,19 @@ public class ParkingAssistant{
         If position < 500 and not parked.
             position = position + 1
             parkingPlaces[position] = isEmpty() > DifferenceValue
-            all other entries of parkingPlaces remain unchanged
+            all other entries of parkingPlaces remain unchanged3
             Otherwise (position == 500 or parked)
             state of the car and parkingPlaces remain unchanged
         Test-cases: 
-        TC1: first move from 0
-        TC2: last move from 500
-        TC3: normal move from the middle of the street
-        TC4: move when parked, state unchanged
-        TC5: free meter (isEmpty() >= 100) recorded as true
-        TC6: occupied meter (isEmpty() < 100) recorded as false
-        TC7 returned status is a snapshot (unchanged by a later move)
+        TC-MF-1  normal move from the middle of the street (250 → 251)
+        TC-MF-2  first move from 0 (0 -> 1)
+        TC-MF-3  at 500: position stays 500, no exception
+        TC-MF-4  while parked: position unchanged, still parked, nothing recorded
+        TC-MF-5  free metre (isEmpty() >= 100) recorded as true
+        TC-MF-6  occupied metre (isEmpty() < 100) recorded as false
+        TC-MF-7  returned status is a snapshot, unchanged by a later move
 
         */
-    //}
     }
     
     public int isEmpty(){
@@ -65,26 +64,26 @@ public class ParkingAssistant{
         Arrays.sort(readings1);
         Arrays.sort(readings2);
 
-        int median1 = readings1[2];
+        int median1 = readings1[2];                             // TC-IE-1, TC-IE-2, TC-IE-3
         int median2 = readings2[2];
 
         int DifferenceValue1 = readings1[4] - readings1[0];
         int DifferenceValue2 = readings2[4] - readings2[0];
 
-        boolean Sensor1Noisy = DifferenceValue1 > 50;
+        boolean Sensor1Noisy = DifferenceValue1 > 50;           // TC-IE-7, TC-IE-9
         boolean Sensor2Noisy = DifferenceValue2 > 50;
 
         if(Sensor1Noisy && Sensor2Noisy){
-            return 0;
+            return 0;                                           // TC-IE-6
         }
         else if(Sensor1Noisy){
-            return median2;
+            return median2;                                     // TC-IE-4
         }
         else if(Sensor2Noisy){
-            return median1;
+            return median1;                                     // TC-IE-5  
         }
         else{
-            return (median1 + median2) / 2;
+            return (median1 + median2) / 2;                     // TC-IE-1, TC-IE-2
         }
 
         /**
@@ -99,25 +98,26 @@ public class ParkingAssistant{
             if both sensors are noisy, return 0
         position of the car and parkingPlaces remain unchanged
         Test-cases: 
-        TC1: both sensors are not noisy, return average of medians
-        TC2: no sensor is noisy, but no free space, return average of medians
-        TC3: sensor 1 is noisy, return median of the other sensor
-        TC4: both sensors are noisy, return 0
-        TC5: sensor 2 is noisy, return median of the other sensor
-        TC6: spread exactly 50, not noisy
-        TC6: each sensor is read exactly 5 times
-        TC7: no side effects, position and parkingPlaces unchanged
+        TC-IE-1  both clean, identical readings -> 130
+        TC-IE-2  both clean, different readings -> average of medians, 127
+        TC-IE-3  one outlier within the limit -> median filters it out, 150
+        TC-IE-4  sensor 1 noisy -> median of sensor 2, 125
+        TC-IE-5  sensor 2 noisy -> median of sensor 1, 125
+        TC-IE-6  both noisy -> 0
+        TC-IE-7  spread exactly 50 -> not noisy, 130
+        TC-IE-8  no side effects on position or parked flag
+        TC-IE-9  spread 51 -> noisy (boundary), both noisy -> 0
         */
        
     }
      
     
         public ParkingStatus MoveBackward(){
-            if(position > 0 && !parked){
-            position--;
-            parkingPlaces.set(position, isEmpty() >= 100);
+            if(position > 0 && !parked){                            // TC-MB-2, TC-MB-3
+            position--;                                             // TC-MB-2, TC-MB-3
+            parkingPlaces.set(position, isEmpty() >= 100);          // TC-MB-4
         }
-            return new ParkingStatus(position, parkingPlaces);
+            return new ParkingStatus(position, parkingPlaces);      // TC-MB-1, TC-MB-6
 
          
         /*   Description: The same as MoveForward above; only it moves the car 1 meter backwards.
@@ -130,36 +130,34 @@ public class ParkingAssistant{
           state unchanged, isEmpty() not called
           A ParkingStatus snapchat of the resulting state is returned.
           Test-cases: 
-            TC1: normal move from the middle of the street
-            TC2: first move from 0
-            TC3: while parked: state unchanged
-            TC4: arriving meter re-sensed and earlier reading is overwritten
-            TC5: moving back to 0 does not write to index 0
-            TC6: returned status is a snapshot (unchanged by a later move)
+          TC-MB-1  normal move backward (250 -> 249)
+          TC-MB-2  at 0: position stays 0, no exception
+          TC-MB-3  while parked: position unchanged
+          TC-MB-4  arriving metre re-sensed and earlier reading overwritten; metres not re-sensed keep their reading
+          TC-MB-5  moving from 1 to 0: position 0 (reading stored at index 0,which Park never uses)
+          TC-MB-6  returned status is a snapshot, unchanged by a later move
         */ 
          
         }
     
 
-     public void Park(){
-
-
-    while(position <= streetLength && !parked) {
-        boolean parkable = position >= 5;
+    public void Park(){
+    while(position <= streetLength && !parked) {                // TC-MB-1, TC-MB-6
+        boolean parkable = position >= 5;                       // TC-PK-7
         
         if(parkable){
             for(int i = position - 4; i <= position; i++) {
-                if(!parkingPlaces.get(i)) {
+                if(!parkingPlaces.get(i)) {                     // TC-PK-1, TC-PK-2
                     parkable = false;
                     break;
                 }
             }
         } if(parkable) {
-            parked = true;
+            parked = true;                                       // TC-PK-1, TC-PK-2, TC-PK-5
         } else if(position < streetLength) {
-            MoveForward();
+            MoveForward();                                       // TC-PK-2, TC-PK-7
         } else {
-            break; // Reached the end of the street
+            break; // Reached the end of the street              // TC-PK-4, TC-PK-8
         }
     }
     /*
@@ -174,55 +172,54 @@ public class ParkingAssistant{
         If parked: state unchanged.
         If parkable(position): parked' = true, position unchanged.
         Otherwise: moveForward() is applied repeatedly until parkable(position)
-                or position == 500. If parkable, parked' = true; else
-                parked' = false and position' = 500.
+        or position == 500. If parkable, parked = true; else 
+        parked = false and position = 500.
 
     Test-cases:
-        TC-PK-1:  Already at end of a free stretch: parks without moving
-        TC-PK-2:  Stretch ahead --> moves forward to its end and parks
-        TC-PK-3:  Occupied metre inside the window: continues past it, parks at the next stretch
-        TC-PK-4:  No stretch anywhere: ends at 500, unparked
-        TC-PK-5:  Stretch is the last 5 metres (496–500): parks at 500
-        TC-PK-6:  Already parked --> nothing happens
-        TC-PK-7:  Called at 0 with free street: parks at 5
-        TC-PK-8:  At 500 unparked with no stretch --> nothing happens
+       TC-PK-1  already at end of a free stretch: parks without moving (at 11)
+       TC-PK-2  stretch ahead: drives to its end and parks (at 5)
+       TC-PK-3  sensors disagree, averaged distance below threshold: no space, ends at 500 unparked
+       TC-PK-4  no stretch anywhere: ends at 500 unparked
+       TC-PK-5  stretch is the last 5 metres (496–500): parks at 500
+       TC-PK-6  already parked: nothing happens, position unchanged
+       TC-PK-7  called at 0 with free street: parks at 5
+       TC-PK-8  at 500, unparked, nothing sensed: nothing happens
     */
     }
 
     public void Unpark(){
         
-        if(parked) {
-            parked = false;
+        if(parked) {            // TC-UP-2
+            parked = false;     // TC-UP-1, TC-UP-3
         }
 
     /*
-            Description: It moves the car forward (and to left) to front of the parking place, if it is parked.
-            Pre-condition: None.
-            Post-condition: If the car was parked: parked becomes false; position and parkingPlaces are unchanged. If the car was not parked: nothing changes.
-            Test-cases:
-                Test1:  Parked car becomes unparked, position unchanged
-                Test2:  Car is not parked --> nothing happens
-                Test3:  After unparking, moveForward works again
-                Test4:  Parking record unchanged by unparking
+        Description: It moves the car forward (and to left) to front of the parking place, if it is parked.
+        Pre-condition: None.
+        Post-condition: If the car was parked: parked becomes false; position and parkingPlaces are unchanged. If the car was not parked: nothing changes.
+        Test-cases:
+        TC-UP-1  parked car becomes unparked
+        TC-UP-2  not parked: nothing happens
+        TC-UP-3  after unparking, MoveForward() works again
+        TC-UP-4  parking record unchanged: a second Park() parks immediately at the same position
     */
     }
 
     public CarStatus WhereIs(){
-    // This method returns the current position of the car in the street as well as its (un)parked status.
-        
-        CarStatus carStatus = new CarStatus(position, parked);
+
+        CarStatus carStatus = new CarStatus(position, parked); // TC-WI-1
         return carStatus;
 
         /*
+        Description: This method returns the current position of the car in the street as well as its (un)parked status.
         Pre-condition: None.
-
         Post-condition: Returns CarStatus(position, parked). No state changes.
-
         Test-cases:
-            Test1:  Initial state: (0, false)
-            Test2:  After some moves: correct position, false
-            Test3:  After park(): correct position, true
-            Test4:  After unPark(): correct position, false
+        TC-WI-1  initial state: (0, false)
+        TC-WI-2  after two moves: (2, false)
+        TC-WI-3  after Park(): (5, true)
+        TC-WI-4  after Unpark(): (5, false)
+        TC-WI-5  no side effects: repeated calls give the same result
         */
     }
 
