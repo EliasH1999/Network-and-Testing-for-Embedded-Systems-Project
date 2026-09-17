@@ -100,8 +100,22 @@ public class ParkingAssistantTest {
 
 
     // Test for isEmpty() method
+
     @Test
-    public void testIsEmpty() { // TC-IE-1: both sensors are not noisy, return average of medians
+    public void testIsEmptySameSensorInputs() { // TC-IE-1: both sensors are not noisy, same sensor values return average of medians
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {100, 120, 130, 140, 145};
+        
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        int result = parkingAssistant.isEmpty();
+
+        assertEquals(130, result, "The average distance to the nearest object should be 127 cm.");
+    }
+
+
+    @Test
+    public void testIsEmptyAverageOfTheMedians() { // TC-IE-2: both sensors are not noisy, diffrent sensor values return average of medians 
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
@@ -113,36 +127,25 @@ public class ParkingAssistantTest {
     }
 
     @Test
-    public void testIsNotEmpty() { // TC-IE-2: no sensor is noisy, but no free space, return average of medians
+    public void testIsEmptyOutlierFilteredByMedian() { // TC-IE-3: one outlier within limit is filtered out
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
-        int[] sensor1 = {10, 15, 20, 25, 30};
-        int[] sensor2 = {5, 10, 15, 20, 25};
-        
+        int[] sensor1 = {150, 150, 190, 150, 150};   // One outlier within limit
+        int[] sensor2 = {150, 150, 150, 150, 150};
         parkingAssistant.setSensorReadings(sensor1, sensor2);
-        int result = parkingAssistant.isEmpty();
 
-        assertEquals(17, result, "The average distance to the nearest object should be 17 cm.");
+        assertEquals(150, parkingAssistant.isEmpty(), "A single outlier must not affect the median.");
     }
 
     @Test
-    public void testIsEmptyWithNoisySensor1() { // TC-IE-3: sensor 1 is noisy, return median of the other sensor
+    public void testIsEmptyWithNoisySensor1() { // TC-IE-4: sensor 1 is noisy, return median of the other sensor
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
-        int[] sensor1 = {100, 120, 130, 140, 160};
+        int[] sensor1 = {100, 120, 130, 140, 160}; //NOISY
         int[] sensor2 = {110, 115, 125, 135, 140};
         parkingAssistant.setSensorReadings(sensor1, sensor2);
         int result = parkingAssistant.isEmpty();
         assertEquals(125, result, "The distance to the nearest object should be 125 cm, disregarding the noisy sensor.");
-    }
+        }   
 
-    @Test
-    public void TestIsEmptyWithBothNoisySensors() { // TC-IE-4: both sensors are noisy, return 0
-        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
-        int[] sensor1 = {100, 120, 130, 140, 160};
-        int[] sensor2 = {110, 115, 125, 135, 170};
-        parkingAssistant.setSensorReadings(sensor1, sensor2);
-        int result = parkingAssistant.isEmpty();
-        assertEquals(0, result, "Both sensors are noisy, so the result should be 0.");
-    }
 
     @Test
     public void testIsEmptyWithNoisySensor2() { // TC-IE-5: sensor 2 is noisy, return median of the other sensor
@@ -155,14 +158,29 @@ public class ParkingAssistantTest {
     }
 
     @Test
-    public void testIsEmptyWithSpreadExactly50() { // TC-IE-6: spread exactly 50, not noisy
+    public void TestIsEmptyWithBothNoisySensors() { // TC-IE-6: both sensors are noisy, return 0
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
-        int[] sensor1 = {100, 120, 130, 140, 150}; // Spread is 50
-        int[] sensor2 = {110, 115, 125, 135, 140}; // Spread is 30
+        int[] sensor1 = {100, 120, 130, 140, 160};
+        int[] sensor2 = {110, 115, 125, 135, 170};
         parkingAssistant.setSensorReadings(sensor1, sensor2);
         int result = parkingAssistant.isEmpty();
-        assertEquals(127, result, "The average distance to the nearest object should be 127 cm.");
+        assertEquals(0, result, "Both sensors are noisy, so the result should be 0.");
     }
+    
+    @Test
+    public void testIsEmptyWithSpreadExactly50() { // TC-IE-7: spread exactly 50, not noisy
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 150}; // Spread is 50
+        int[] sensor2 = {100, 120, 130, 140, 150}; // Spread is 50
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        int result = parkingAssistant.isEmpty();
+        assertEquals(130, result, "The average distance to the nearest object should be 127 cm.");
+    }
+
+
+
+
+
     
 
     // Test cases for MoveBackward method
@@ -258,13 +276,21 @@ public class ParkingAssistantTest {
         assertFalse(b.getparkingPlaces().get(1), "Second status has the new reading for metre 1.");
 }
     
+
+
+
+
+
     // Test cases for the Park method
     @Test
-    public void testParkAtEndOfFreeStrech() { // TC 1: at the end of a free stretch, should park at the first available 5-metre space
+    public void testParkAtEndOfFreeStrech() { // TC-PK-1: at the end of a free stretch, should park at the first available 5-metre space
         ParkingAssistant parkingAssistant = new ParkingAssistant(6);
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
         parkingAssistant.setSensorReadings(sensor1, sensor2);
+        for (int i = 0; i < 5; i++){
+            parkingAssistant.MoveForward();
+        }
         parkingAssistant.Park();
         CarStatus result = parkingAssistant.WhereIs();
 
@@ -273,7 +299,7 @@ public class ParkingAssistantTest {
     }
 
     @Test
-    public void testParkStretchAhead(){
+    public void testParkStretchAhead(){ //TC-PK-2
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
@@ -285,7 +311,7 @@ public class ParkingAssistantTest {
         assertEquals(5, result.getPosition(), "The car should be parked at position 5.");
     }
     @Test
-    public void testParkOccupiedMeter(){
+    public void testParkOccupiedMeter(){ //TC-PK-3
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {20, 30, 40, 45, 50};
         int[] sensor2 = {120, 130, 140, 150, 160};
@@ -296,9 +322,22 @@ public class ParkingAssistantTest {
         assertFalse(result.isParked(), "The car should not be parked.");
         assertEquals(500, result.getPosition(), "The car should remain at position 0.");
     }
+
+    @Test
+    public void testParkWhenAllStrechesOccupied(){ //TC-PK-4
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {99, 99, 99, 99, 99};
+        int[] sensor2 = {99, 99, 99, 99, 99};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.Park();
+        CarStatus result = parkingAssistant.WhereIs();
+
+        assertFalse(result.isParked(), "The car should not be parked.");
+        assertEquals(500, result.getPosition(), "The car should have moved from 0 to 500.");
+    }
     
     @Test
-    public void testParkStretchLastFiveMeters(){
+    public void testParkStretchLastFiveMeters(){ //TC-PK-5
         ParkingAssistant parkingAssistant = new ParkingAssistant(495);
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
@@ -311,32 +350,54 @@ public class ParkingAssistantTest {
     }
     
     @Test
-    public void testParkAlreadyParked(){
+    public void testParkAlreadyParked(){ //TC-PK-6
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
         parkingAssistant.setSensorReadings(sensor1, sensor2);
         parkingAssistant.Park();
-        CarStatus resultBeforeUnpark = parkingAssistant.WhereIs();
+        CarStatus resultBeforePark = parkingAssistant.WhereIs();
         
-        assertTrue(resultBeforeUnpark.isParked(), "The car should be parked.");
+        assertTrue(resultBeforePark.isParked(), "The car should be parked.");
         
         parkingAssistant.Park();
-        CarStatus resultAfterUnpark = parkingAssistant.WhereIs();
+        CarStatus resultAfterPark = parkingAssistant.WhereIs();
         
-        assertTrue(resultAfterUnpark.isParked(), "The car should still be parked after attempting to park again.");
+        assertTrue(resultAfterPark.isParked(), "The car should still be parked after attempting to park again.");
     }
 
     @Test
-    public void testParkNoFreeSpace(){
+    public void testParkAsSoonAsPossibleStartFromZero() { // TC-PK-7
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
-        int[] sensor1 = {10, 20, 30, 40, 50};
-        int[] sensor2 = {15, 25, 35, 45, 55};
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
         parkingAssistant.setSensorReadings(sensor1, sensor2);
         parkingAssistant.Park();
         CarStatus result = parkingAssistant.WhereIs();
-        assertFalse(result.isParked(), "The car should not be parked when there is no free space.");
+
+        assertTrue(result.isParked(), "The car should be parked.");
+        assertEquals(5, result.getPosition(), "The car should be parked at position 5.");
     }
+
+    @Test
+    public void testParkAt500WithoutAnyFreeSpace() { // TC-PK-7
+        ParkingAssistant parkingAssistant = new ParkingAssistant(500);
+        CarStatus resultBeforePark = parkingAssistant.WhereIs();
+        parkingAssistant.Park();
+        CarStatus resultAfterPark = parkingAssistant.WhereIs();
+
+        assertFalse(resultBeforePark.isParked(), "The car should not be parked.");
+        assertFalse(resultAfterPark.isParked(), "The car should not be parked.");
+        assertEquals(500, resultBeforePark.getPosition(), "The car should be at position 500.");
+        assertEquals(500, resultAfterPark.getPosition(), "The car should still be at position 500.");
+
+    }
+
+
+
+
+
+
 
 
 
@@ -477,7 +538,6 @@ public class ParkingAssistantTest {
         assertFalse(carStatusAfter.isParked(), "The car should not be parked after calling WhereIs().");
 
     }
-    // Test cases for the Unpark method
 
 
 

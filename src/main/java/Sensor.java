@@ -8,7 +8,7 @@ public class Sensor {
 
     public void setSensorReadings(int[] sensor1, int[] sensor2) {
         this.sensor1Readings = sensor1;
-        this.sensor2Readings = sensor2;
+        this.sensor2Readings = sensor2; 
     }
 
     /*
