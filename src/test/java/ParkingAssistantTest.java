@@ -177,9 +177,29 @@ public class ParkingAssistantTest {
         assertEquals(130, result, "The average distance to the nearest object should be 127 cm.");
     }
 
+    @Test
+    public void testIsEmptyHasNoSideEffects() { // TC-IE-8
+        ParkingAssistant parkingAssistant = new ParkingAssistant(10);
+        parkingAssistant.setSensorReadings(new int[]{100,120,130,140,145}, new int[]{110,115,125,135,140});
 
+        parkingAssistant.isEmpty();
+        parkingAssistant.isEmpty();
 
+        CarStatus status = parkingAssistant.WhereIs();
+        assertEquals(10, status.getPosition(), "isEmpty() must not move the car.");
+        assertFalse(status.isParked(), "isEmpty() must not park the car.");
+        assertEquals(11, parkingAssistant.MoveForward().getcurrentPosition(), "Next move behaves normally.");
+    }
 
+    @Test
+    public void TestIsEmptyHigherBoundary() { // TC-IE-9: both sensors are noisy right at the higher boundary (51)
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 151};
+        int[] sensor2 = {110, 115, 125, 135, 161};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        int result = parkingAssistant.isEmpty();
+        assertEquals(0, result, "Both sensors are noisy, so the result should be 0.");
+    }
 
     
 
@@ -380,7 +400,7 @@ public class ParkingAssistantTest {
     }
 
     @Test
-    public void testParkAt500WithoutAnyFreeSpace() { // TC-PK-7
+    public void testParkAt500WithoutAnyFreeSpace() { // TC-PK-8
         ParkingAssistant parkingAssistant = new ParkingAssistant(500);
         CarStatus resultBeforePark = parkingAssistant.WhereIs();
         parkingAssistant.Park();
