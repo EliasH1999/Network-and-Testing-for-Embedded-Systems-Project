@@ -484,7 +484,6 @@ public class ParkingAssistantTest {
 
         CarStatus afterParkAndUnpark = parkingAssistant.WhereIs();
         assertTrue(afterParkAndUnpark.isParked(), "The car should be parked after calling Park() again.");
-        assertEquals(afterParkAndUnpark.isParked(), true, "The car should be parked after calling Park() again.");
     }
 
     

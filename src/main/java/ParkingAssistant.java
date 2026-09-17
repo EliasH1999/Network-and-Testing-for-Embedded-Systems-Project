@@ -40,7 +40,7 @@ public class ParkingAssistant{
         Post-condition: 
         If position < 500 and not parked.
             position = position + 1
-            parkingPlaces[position] = isEmpty() > DifferenceValue
+            parkingPlaces[position] = isEmpty() >= 100
             all other entries of parkingPlaces remain unchanged3
             Otherwise (position == 500 or parked)
             state of the car and parkingPlaces remain unchanged
@@ -114,7 +114,7 @@ public class ParkingAssistant{
     
         public ParkingStatus MoveBackward(){
             if(position > 0 && !parked){                            // TC-MB-2, TC-MB-3
-            position--;                                             // TC-MB-2, TC-MB-3
+            position--;                                             // TC-MB-1, TC-MB-5
             parkingPlaces.set(position, isEmpty() >= 100);          // TC-MB-4
         }
             return new ParkingStatus(position, parkingPlaces);      // TC-MB-1, TC-MB-6
@@ -125,7 +125,7 @@ public class ParkingAssistant{
           Pre-condition: None. All of the edge cases are handled by the post-condition.
           Post-condition: If position > 0 and not parked.
           position = position - 1
-          parkingPlaces[position] = isEmpty() > DifferenceValue
+          parkingPlaces[position] = isEmpty() >= 100
           Otherwise (position == 0 or parked)
           state unchanged, isEmpty() not called
           A ParkingStatus snapchat of the resulting state is returned.
@@ -142,7 +142,7 @@ public class ParkingAssistant{
     
 
     public void Park(){
-    while(position <= streetLength && !parked) {                // TC-MB-1, TC-MB-6
+    while(position <= streetLength && !parked) {                // TC-PK-6
         boolean parkable = position >= 5;                       // TC-PK-7
         
         if(parkable){

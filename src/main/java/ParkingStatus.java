@@ -25,7 +25,5 @@ public class ParkingStatus {
     Pre-condition: Parking places it non null and has length of 501
     Post-condition: getcurrentPosition() == position, getparkingPlaces() is a new array equal in content to parkingPlaces
     at construction time; later changes to the original do not affect it. 
-    Test-cases: TC1: content equals the array passed in, TC2 modifying the original array does not change
-    the snapshot
     */
 }
