@@ -393,7 +393,7 @@ public class ParkingAssistantTest {
     
     // test for WhereIs() method
     @Test
-    public void testWherelsInitialState() { // TC1: initial state (0, false)
+    public void testWherelsInitialState() { // TC-WI-1: initial state (0, false)
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
 
         CarStatus result = parkingAssistant.WhereIs();
@@ -403,7 +403,7 @@ public class ParkingAssistantTest {
     }
 
     @Test 
-    public void testWherelsAfterMoving() { //TC2: after moving forward twice (2, false)
+    public void testWherelsAfterMoving() { //TC-WI-2: after moving forward twice (2, false)
         ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
@@ -418,8 +418,69 @@ public class ParkingAssistantTest {
     }
 
     @Test
-    public void testWhereIsafterPark(){}
+    public void testWhereIsafterPark(){ //TC-WI-3: after parking (5, true)
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.MoveForward();
+        parkingAssistant.MoveForward();
+        parkingAssistant.MoveForward();
+        parkingAssistant.MoveForward();
+        parkingAssistant.MoveForward();
+
+        parkingAssistant.Park(); // Park the car
+
+        CarStatus carStatus = parkingAssistant.WhereIs();
+
+        assertEquals(5, carStatus.getPosition(), "The position should be 5 after moving forward 5 times.");
+        assertTrue(carStatus.isParked(), "The car should be parked after calling Park().");
+    }
 
     @Test 
-    public void testWhereIsafterUnpark(){}
+    public void testWhereIsafterUnpark(){ //TC-WI-4: after unparking (5, false)
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        parkingAssistant.MoveForward();
+        parkingAssistant.MoveForward();
+        parkingAssistant.MoveForward();
+        parkingAssistant.MoveForward();
+        parkingAssistant.MoveForward();
+
+        parkingAssistant.Park(); // Park the car
+        assertTrue(parkingAssistant.WhereIs().isParked(), "Precondition: car is parked before Unpark().");
+
+
+        parkingAssistant.Unpark(); // Unpark the car
+
+        CarStatus carStatus = parkingAssistant.WhereIs();
+
+        assertEquals(5, carStatus.getPosition(), "The position should be 5 after moving forward 5 times.");
+        assertFalse(carStatus.isParked(), "The car should not be parked after calling Park() and then Unpark().");
+    }
+    
+    @Test 
+    public void testWhereIsHasNoSideEffects(){
+        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        int[] sensor1 = {100, 120, 130, 140, 145};
+        int[] sensor2 = {110, 115, 125, 135, 140};
+        parkingAssistant.setSensorReadings(sensor1, sensor2);
+
+        CarStatus carStatusBefore = parkingAssistant.WhereIs();
+        CarStatus carStatusAfter = parkingAssistant.WhereIs();
+
+        assertEquals(0, carStatusBefore.getPosition(), "The initial position should be 0.");
+        assertEquals(0, carStatusAfter.getPosition(), "The position should remain 0 after calling WhereIs().");
+        assertFalse(carStatusBefore.isParked(), "The car should not be parked initially.");
+        assertFalse(carStatusAfter.isParked(), "The car should not be parked after calling WhereIs().");
+
+    }
+    // Test cases for the Unpark method
+
+
+
+
 }
+
