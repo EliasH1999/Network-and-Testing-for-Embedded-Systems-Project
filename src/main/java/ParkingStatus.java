@@ -19,15 +19,6 @@ public class ParkingStatus {
         return new ArrayList<>(parkingPlaces);
     }
 
-    // Används inte?
-    public void setparkingPlaces(int index, boolean value) {
-        parkingPlaces.set(index, value);
-    }
-
-    public ParkingStatus getparkingStatus() {
-        return new ParkingStatus(currentPosition, parkingPlaces);
-    }
-
 
     /*
     Description: Returns the current position of the car as well as the parking record.

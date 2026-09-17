@@ -8,17 +8,13 @@ public class ParkingAssistant{
     private List<Boolean> parkingPlaces = new ArrayList<>(Collections.nCopies(streetLength + 1, false)); 
     private boolean parked = false;
 
-    /* Vet inte om detta behövs
-    public boolean getParkedStatus() {
-        return parked;
-    }
-
-    public int getPosition() {
-        return position;
-    }*/
-
     private int[] sensor1Readings;
     private int[] sensor2Readings;
+
+    //Constructor
+    public ParkingAssistant(int position) {
+        this.position = position;
+    }
 
     public void setSensorReadings(int[] sensor1, int[] sensor2) {
         this.sensor1Readings = sensor1;
@@ -61,19 +57,10 @@ public class ParkingAssistant{
     //}
     }
     
-    public ParkingAssistant(int position) {
-        this.position = position;
-    }
     public int isEmpty(){
 
-        int[] readings1 = sensor1Readings;
-        int[] readings2 = sensor2Readings;
-
-        /*
-        for(int i = 0; i < 5; i++){
-            readings1[i] = sensor1.checkSensor()[i];
-            readings2[i] = sensor2.checkSensor()[i];
-        }*/
+        int[] readings1 = sensor1Readings.clone();
+        int[] readings2 = sensor2Readings.clone();
 
         Arrays.sort(readings1);
         Arrays.sort(readings2);
@@ -191,14 +178,14 @@ public class ParkingAssistant{
                 parked' = false and position' = 500.
 
     Test-cases:
-        Test1:  Already at end of a free stretch: parks without moving
-        Test2:  Stretch ahead --> moves forward to its end and parks
-        Test3:  Occupied metre inside the window: continues past it, parks at the next stretch
-        Test4:  No stretch anywhere: ends at 500, unparked
-        Test5:  Stretch is the last 5 metres (496–500): parks at 500
-        Test6:  Already parked --> nothing happens
-        Test7:  Called at 0 with free street: parks at 5
-        Test8:  At 500 unparked with no stretch --> nothing happens
+        TC-PK-1:  Already at end of a free stretch: parks without moving
+        TC-PK-2:  Stretch ahead --> moves forward to its end and parks
+        TC-PK-3:  Occupied metre inside the window: continues past it, parks at the next stretch
+        TC-PK-4:  No stretch anywhere: ends at 500, unparked
+        TC-PK-5:  Stretch is the last 5 metres (496–500): parks at 500
+        TC-PK-6:  Already parked --> nothing happens
+        TC-PK-7:  Called at 0 with free street: parks at 5
+        TC-PK-8:  At 500 unparked with no stretch --> nothing happens
     */
     }
 
