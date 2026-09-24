@@ -3,18 +3,25 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 public class ParkingAssistant{
-    private int position = 0;
+    private Actuator actuator;
     private static final int streetLength = 500;
     private List<Boolean> parkingPlaces = new ArrayList<>(Collections.nCopies(streetLength + 1, false)); 
     private boolean parked = false;
+    
+    /* Vet inte om detta behövs
+    public boolean getParkedStatus() {
+        return parked;
+    }
+
+    public int getPosition() {
+        return position;
+    }*/
 
     private int[] sensor1Readings;
     private int[] sensor2Readings;
 
     //Constructor
-    public ParkingAssistant(int position) {
-        this.position = position;
-    }
+
 
     public void setSensorReadings(int[] sensor1, int[] sensor2) {
         this.sensor1Readings = sensor1;
@@ -24,13 +31,13 @@ public class ParkingAssistant{
 
     public ParkingStatus MoveForward(){
 
-
-        if(position < streetLength && !parked){                 // TC-MF-3, TC-MF-4
-            position++;                                         // TC-MF-1, TC-MF-2
-            parkingPlaces.set(position, isEmpty() >= 100);      // TC-MF-5, TC-MF-6
+        
+        if(actuator.getPosition() < streetLength && !parked){
+            actuator.moveforward();
+            parkingPlaces.set(actuator.getPosition(), isEmpty() >= 100);
         }
             
-        return new ParkingStatus(position, parkingPlaces);      // TC-MF-1, TC-MF-7
+        return new ParkingStatus(actuator.getPosition(), parkingPlaces);  
         
 
         /**
@@ -56,6 +63,9 @@ public class ParkingAssistant{
         */
     }
     
+    public ParkingAssistant(int position) {
+        this.actuator = new CarActuator(position);
+    }
     public int isEmpty(){
 
         int[] readings1 = sensor1Readings.clone();
@@ -113,11 +123,11 @@ public class ParkingAssistant{
      
     
         public ParkingStatus MoveBackward(){
-            if(position > 0 && !parked){                            // TC-MB-2, TC-MB-3
-            position--;                                             // TC-MB-1, TC-MB-5
-            parkingPlaces.set(position, isEmpty() >= 100);          // TC-MB-4
-        }
-            return new ParkingStatus(position, parkingPlaces);      // TC-MB-1, TC-MB-6
+            if(actuator.getPosition() > 0) {
+                actuator.movebackward();
+
+            }
+            return new ParkingStatus(actuator.getPosition(), parkingPlaces);
 
          
         /*   Description: The same as MoveForward above; only it moves the car 1 meter backwards.
@@ -141,21 +151,23 @@ public class ParkingAssistant{
         }
     
 
-    public void Park(){
-    while(position <= streetLength && !parked) {                // TC-PK-6
-        boolean parkable = position >= 5;                       // TC-PK-7
+     public void Park(){
+
+
+    while(actuator.getPosition() <= streetLength && !parked) {
+        boolean parkable = actuator.getPosition() >= 5;
         
         if(parkable){
-            for(int i = position - 4; i <= position; i++) {
-                if(!parkingPlaces.get(i)) {                     // TC-PK-1, TC-PK-2
+            for(int i = actuator.getPosition() - 4; i <= actuator.getPosition(); i++) {
+                if(!parkingPlaces.get(i)) {
                     parkable = false;
                     break;
                 }
             }
         } if(parkable) {
-            parked = true;                                       // TC-PK-1, TC-PK-2, TC-PK-5
-        } else if(position < streetLength) {
-            MoveForward();                                       // TC-PK-2, TC-PK-7
+            parked = true;
+        } else if(actuator.getPosition() < streetLength) {
+            MoveForward();
         } else {
             break; // Reached the end of the street              // TC-PK-4, TC-PK-8
         }
@@ -206,8 +218,9 @@ public class ParkingAssistant{
     }
 
     public CarStatus WhereIs(){
-
-        CarStatus carStatus = new CarStatus(position, parked); // TC-WI-1
+    // This method returns the current position of the car in the street as well as its (un)parked status.
+        
+        CarStatus carStatus = new CarStatus(actuator.getPosition(), parked);
         return carStatus;
 
         /*
