@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 public class ParkingAssistant{
-    private int position = 0;
+    private Actuator actuator;
     private static final int streetLength = 500;
     private List<Boolean> parkingPlaces = new ArrayList<>(Collections.nCopies(streetLength + 1, false)); 
     private boolean parked = false;
@@ -13,7 +13,7 @@ public class ParkingAssistant{
 
     //Constructor
     public ParkingAssistant(int position) {
-        this.position = position;
+        this.actuator = new CarActuator(position);
     }
 
     public void setSensorReadings(int[] sensor1, int[] sensor2) {
@@ -25,12 +25,13 @@ public class ParkingAssistant{
     public ParkingStatus MoveForward(){
 
 
-        if(position < streetLength && !parked){                 // TC-MF-3, TC-MF-4
-            position++;                                         // TC-MF-1, TC-MF-2
-            parkingPlaces.set(position, isEmpty() >= 100);      // TC-MF-5, TC-MF-6
+
+        if(actuator.getPosition() < streetLength && !parked){                 // TC-MF-3, TC-MF-4
+            actuator.moveforward();                        // TC-MF-1, TC-MF-2
+            parkingPlaces.set(actuator.getPosition(), isEmpty() >= 100);      // TC-MF-5, TC-MF-6
         }
             
-        return new ParkingStatus(position, parkingPlaces);      // TC-MF-1, TC-MF-7
+        return new ParkingStatus(actuator.getPosition(), parkingPlaces);      // TC-MF-1, TC-MF-7
         
 
         /**
@@ -113,11 +114,11 @@ public class ParkingAssistant{
      
     
         public ParkingStatus MoveBackward(){
-            if(position > 0 && !parked){                            // TC-MB-2, TC-MB-3
-            position--;                                             // TC-MB-1, TC-MB-5
-            parkingPlaces.set(position, isEmpty() >= 100);          // TC-MB-4
+            if(actuator.getPosition() > 0 && !parked){  
+            actuator.movebackward();                         // TC-MB-2, TC-MB-3                                           // TC-MB-1, TC-MB-5
+            parkingPlaces.set(actuator.getPosition(), isEmpty() >= 100);          // TC-MB-4
         }
-            return new ParkingStatus(position, parkingPlaces);      // TC-MB-1, TC-MB-6
+            return new ParkingStatus(actuator.getPosition(), parkingPlaces);      // TC-MB-1, TC-MB-6
 
          
         /*   Description: The same as MoveForward above; only it moves the car 1 meter backwards.
@@ -142,11 +143,11 @@ public class ParkingAssistant{
     
 
     public void Park(){
-    while(position <= streetLength && !parked) {                // TC-PK-6
-        boolean parkable = position >= 5;                       // TC-PK-7
+    while(actuator.getPosition() <= streetLength && !parked) {                // TC-PK-6
+        boolean parkable = actuator.getPosition() >= 5;                       // TC-PK-7
         
         if(parkable){
-            for(int i = position - 4; i <= position; i++) {
+            for(int i = actuator.getPosition() - 4; i <= actuator.getPosition(); i++) {
                 if(!parkingPlaces.get(i)) {                     // TC-PK-1, TC-PK-2
                     parkable = false;
                     break;
@@ -154,7 +155,7 @@ public class ParkingAssistant{
             }
         } if(parkable) {
             parked = true;                                       // TC-PK-1, TC-PK-2, TC-PK-5
-        } else if(position < streetLength) {
+        } else if(actuator.getPosition() < streetLength) {
             MoveForward();                                       // TC-PK-2, TC-PK-7
         } else {
             break; // Reached the end of the street              // TC-PK-4, TC-PK-8
@@ -207,7 +208,7 @@ public class ParkingAssistant{
 
     public CarStatus WhereIs(){
 
-        CarStatus carStatus = new CarStatus(position, parked); // TC-WI-1
+        CarStatus carStatus = new CarStatus(actuator.getPosition(), parked); // TC-WI-1
         return carStatus;
 
         /*
