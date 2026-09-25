@@ -123,9 +123,9 @@ public class ParkingAssistant{
      
     
         public ParkingStatus MoveBackward(){
-            if(actuator.getPosition() > 0) {
+            if(actuator.getPosition() > 0 && !parked) {
                 actuator.movebackward();
-
+                parkingPlaces.set(actuator.getPosition(), isEmpty() >= 100);
             }
             return new ParkingStatus(actuator.getPosition(), parkingPlaces);
 
