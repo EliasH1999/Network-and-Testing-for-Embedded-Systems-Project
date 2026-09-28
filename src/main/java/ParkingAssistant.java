@@ -11,10 +11,22 @@ public class ParkingAssistant{
     private int[] sensor1Readings;
     private int[] sensor2Readings;
 
+    private Sensor sensor1;
+    private Sensor sensor2; 
+
     //Constructor
     public ParkingAssistant(int position) {
         this.actuator = new CarActuator(position);
     }
+
+    public ParkingAssistant(Sensor sensor1, Sensor sensor2, Actuator actuator) {
+        this.sensor1 = sensor1;
+        this.sensor2 = sensor2;
+        this.actuator = actuator;
+
+    }
+
+
 
     public void setSensorReadings(int[] sensor1, int[] sensor2) {
         this.sensor1Readings = sensor1;
@@ -24,10 +36,7 @@ public class ParkingAssistant{
 
     public ParkingStatus MoveForward(){
 
-
-
-        if(actuator.getPosition() < streetLength && !parked){                 // TC-MF-3, TC-MF-4
-            actuator.moveforward();                        // TC-MF-1, TC-MF-2
+        if(!parked && actuator.moveForward()){                 // TC-MF-3, TC-MF-4                        // TC-MF-1, TC-MF-2
             parkingPlaces.set(actuator.getPosition(), isEmpty() >= 100);      // TC-MF-5, TC-MF-6
         }
             
@@ -59,8 +68,16 @@ public class ParkingAssistant{
     
     public int isEmpty(){
 
-        int[] readings1 = sensor1Readings.clone();
-        int[] readings2 = sensor2Readings.clone();
+        // int[] readings1 = sensor1Readings.clone();
+        // int[] readings2 = sensor2Readings.clone();
+
+        int position = actuator.getPosition();
+        int[] readings1 = new int[5];
+        int[] readings2 = new int[5];
+        for(int i = 0; i < 5; i++){
+            readings1[i] = sensor1.getReading(position);
+            readings2[i] = sensor2.getReading(position);
+        }
 
         Arrays.sort(readings1);
         Arrays.sort(readings2);
@@ -114,8 +131,7 @@ public class ParkingAssistant{
      
     
         public ParkingStatus MoveBackward(){
-            if(actuator.getPosition() > 0 && !parked){  
-            actuator.movebackward();                         // TC-MB-2, TC-MB-3                                           // TC-MB-1, TC-MB-5
+            if(!parked && actuator.moveBackward()){                               // TC-MB-2, TC-MB-3                                           // TC-MB-1, TC-MB-5
             parkingPlaces.set(actuator.getPosition(), isEmpty() >= 100);          // TC-MB-4
         }
             return new ParkingStatus(actuator.getPosition(), parkingPlaces);      // TC-MB-1, TC-MB-6
@@ -224,4 +240,4 @@ public class ParkingAssistant{
         */
     }
 
-    }
+}

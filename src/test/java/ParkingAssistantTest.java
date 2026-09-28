@@ -3,14 +3,44 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
+
+
 public class ParkingAssistantTest {
+    private int[] values1; 
+    private int[] values2;
+    private int index1;
+    private int index2;
+
+    /* 
+    Creates a ParkingAssistant instance with mocked sensors and a car actuator at the start position.
+    The mocks return the 5 given sensor values in order and then start over.
+    So every isEmpty() call gets exatcly these 5 values, as setSensorReadings did in phase1.
+    
+    This is a helper method for the Phase 1 test to be able to keep the phase1 tests but also prove the refactoring doesent brake anything.
+    */
+
+    private ParkingAssistant create(int[] sensor1, int[] sensor2, int position){
+        values1 = sensor1;
+        values2 = sensor2;
+        index1 = 0;
+        index2 = 0; 
+        
+        Sensor sensor1Mock = mock(Sensor.class);
+        Sensor sensor2Mock = mock(Sensor.class);
+
+        when(sensor1Mock.getReading(anyInt())).thenAnswer(invocation -> values1[index1++ % values1.length]);
+        when(sensor2Mock.getReading(anyInt())).thenAnswer(invocation -> values2[index2++ % values2.length]);
+
+        return new ParkingAssistant(sensor1Mock, sensor2Mock, new CarActuator(position));
+    }
 
     @Test
     public void testMoveForwardFromMiddleofStreet() { // TC-MF-1: normal move from the middle of the street
-        ParkingAssistant parkingAssistant = new ParkingAssistant(250);
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
-        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        ParkingAssistant parkingAssistant = create(sensor1, sensor2, 250);
         ParkingStatus result = parkingAssistant.MoveForward();
 
         assertEquals(251, result.getcurrentPosition(), "The car should have moved forward by 1 meter from the middle of the street.");
@@ -19,10 +49,9 @@ public class ParkingAssistantTest {
     // test cases for the moveForward method
     @Test
     public void testMoveForward() { // TC-MF-2: first move from 0
-        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
-        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
         ParkingStatus result = parkingAssistant.MoveForward();
         assertEquals(1, result.getcurrentPosition(), "The car should have moved forward by 1 meter.");
 
@@ -30,10 +59,9 @@ public class ParkingAssistantTest {
 
     @Test  
     public void testMoveForwardAtEndOfStreet() { // TC-MF-3: last move from 500
-        ParkingAssistant parkingAssistant = new ParkingAssistant(500);
         int[] sensor1 = {100, 120, 130, 140, 145};
         int[] sensor2 = {110, 115, 125, 135, 140};
-        parkingAssistant.setSensorReadings(sensor1, sensor2);
+        ParkingAssistant parkingAssistant = create(sensor1, sensor2, 500);
         ParkingStatus result = parkingAssistant.MoveForward();
 
         assertEquals(500, result.getcurrentPosition(), "The car should not move forward beyond the end of the street.");
@@ -199,6 +227,19 @@ public class ParkingAssistantTest {
         parkingAssistant.setSensorReadings(sensor1, sensor2);
         int result = parkingAssistant.isEmpty();
         assertEquals(0, result, "Both sensors are noisy, so the result should be 0.");
+    }
+
+    @Test
+    public void testIsEmptyReadsMockedSensors(){ //TC-IE-10
+        Sensor mockSensor1 = mock(Sensor.class); 
+        Sensor mockSensor2 = mock(Sensor.class);
+        when(mockSensor1.getReading(anyInt())).thenReturn(150);
+        when(mockSensor2.getReading(anyInt())).thenReturn(150);
+        ParkingAssistant parkingAssistant = new ParkingAssistant(mockSensor1, mockSensor2, new CarActuator(42));
+
+        assertEquals(150, parkingAssistant.isEmpty(), "Both sensors report 150, so isEmpty() should return 150.");
+        verify(mockSensor1, times(5)).getReading(anyInt());
+        verify(mockSensor2, times(5)).getReading(anyInt());
     }
 
     

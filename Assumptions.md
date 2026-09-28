@@ -43,3 +43,9 @@
 
 # WhereIs
 - Returns a CarStatus containing postion (int, 0-500) and parked (boolean) 
+
+# Sensor
+- The position is passed so the simulated sensor can look up the street
+
+
+
