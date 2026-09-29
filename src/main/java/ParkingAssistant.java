@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 public class ParkingAssistant{
@@ -7,6 +6,8 @@ public class ParkingAssistant{
     private static final int streetLength = 500;
     private List<Boolean> parkingPlaces = new ArrayList<>(Collections.nCopies(streetLength + 1, false)); 
     private boolean parked = false;
+
+    private MockSensor mockSensor;
 
     private int[] sensor1Readings;
     private int[] sensor2Readings;
@@ -58,7 +59,10 @@ public class ParkingAssistant{
     }
     
     public int isEmpty(){
+        
+        return mockSensor.getReading(actuator.getPosition());
 
+        /*
         int[] readings1 = sensor1Readings.clone();
         int[] readings2 = sensor2Readings.clone();
 
@@ -85,7 +89,7 @@ public class ParkingAssistant{
         }
         else{
             return (median1 + median2) / 2;                     // TC-IE-1, TC-IE-2
-        }
+        }*/
 
         /**
         Description:This method queries the two ultrasound sensors at least 5 times and filters the noise in their results and returns the distance in cm to the nearest object 
