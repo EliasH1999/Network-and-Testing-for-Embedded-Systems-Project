@@ -17,7 +17,7 @@ public class ParkingStatus {
 
     public List<Boolean> getparkingPlaces() {
         return new ArrayList<>(parkingPlaces);
-    }
+    }   
 
 
     /*
