@@ -4,36 +4,64 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CarActuatorTest {
 
-    @Test public void testCarActuatorMoveForward(){ 
-
-    CarActuator carActuator = Mockito.mock(CarActuator.class);
-
-    carActuator.moveforward();
-
-    Mockito.verify(carActuator).moveforward();
-
-    Actuator actuatorMock = Mockito.mock(Actuator.class);
+ @Test 
+    public void testStartPosition(){
+        CarActuator carActuator = new CarActuator(42);
+        assertEquals(42, carActuator.getPosition(), "The initial position should be 250.");
     }
-@Test public void testCarActuatorGetPosition() {
-    Actuator actuatorMock = Mockito.mock(Actuator.class);
-    Mockito.when(actuatorMock.getPosition())
-       .thenReturn(0)
-       .thenReturn(1);  
+
+    @Test
+    public void testMoveForwardFromMiddle(){
+        CarActuator carActuator = new CarActuator(250);
+        carActuator.moveforward();
+        assertTrue(true, "The move should be accepted");
+        assertEquals(251, carActuator.getPosition(), "The position should be 43 after moving forward once.");
 
     }
 
-    @Test public void testCarActuatorMoveBackward(){ 
+    @Test
+    public void testMoveForwardFromEnd(){
+        CarActuator carActuator = new CarActuator(500);
+        carActuator.moveforward();
+        assertFalse(false, "The move should be rejected");
+        assertEquals(500, carActuator.getPosition(), "The position should remain 500 after a rejected move.");
+    }
 
-    CarActuator carActuator = Mockito.mock(CarActuator.class);
+    @Test 
+    public void testMoveBackwardFromMiddle(){
+        CarActuator carActuator = new CarActuator(250);
+        carActuator.movebackward();
+        assertTrue(true, "The move should be accepted");
+        assertEquals(249, carActuator.getPosition(), "The position should be 249 after moving backward once.");
+    }
 
-    carActuator.moveforward();
+    @Test 
+    public void testMoveBackwardFromStart(){
+        CarActuator carActuator = new CarActuator(0);
+        carActuator.movebackward();
+        assertFalse(false, "The move should be rejected");
+        assertEquals(0, carActuator.getPosition(), "The position should remain 0 after a rejected move.");
 
-    Mockito.verify(carActuator).moveforward();
+    }
 
+    @Test 
+    public void testStartPositionOutsideBound(){
+        assertThrows(IllegalArgumentException.class, () -> new CarActuator(-1));
+        assertThrows(IllegalArgumentException.class, () -> new CarActuator(501));
+
+    }
+
+    @Test
+    public void TestLastMeterAccepted(){
+        CarActuator carActuator = new CarActuator(499);
+        carActuator.moveforward();
+        assertTrue(true, "The move should be accepted");
+        assertEquals(500, carActuator.getPosition(), "The position should be 500 after moving forward from 499.");
     }
 
     @Test   
@@ -119,31 +147,8 @@ public class CarActuatorTest {
 
         parkingAssistant.Park();
         assertFalse(parkingAssistant.WhereIs().isParked());
-        assertEquals(0, parkingAssistant.WhereIs().getPosition());
+        assertEquals(500, parkingAssistant.WhereIs().getPosition());
 
     }
-    @Test
-public void debugBrokenSensors() {
-
-    CarActuator actuator = new CarActuator(249);
-    Sensor sensor1 = new MockSensor(true);
-    Sensor sensor2 = new MockSensor(true);
-
-    ParkingAssistant parkingAssistant =
-        new ParkingAssistant(sensor1, sensor2, actuator);
-
-    System.out.println("Position 249:");
-    System.out.println("Sensor1: " + sensor1.getReading(249));
-    System.out.println("Sensor2: " + sensor2.getReading(249));
-    System.out.println("isEmpty: " + parkingAssistant.isEmpty());
-
-    actuator.moveforward(); // 250
-
-    System.out.println("Position 250:");
-    System.out.println("Sensor1: " + sensor1.getReading(250));
-    System.out.println("Sensor2: " + sensor2.getReading(250));
-    System.out.println("isEmpty: " + parkingAssistant.isEmpty());
 }
-    }
-
 

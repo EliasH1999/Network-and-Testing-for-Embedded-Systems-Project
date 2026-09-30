@@ -21,6 +21,10 @@ public class ParkingAssistant{
         this.sensor1 = sensor1;
         this.sensor2 = sensor2;
     }
+    //Constructor for phase 1 testing
+    public ParkingAssistant(int position) {
+    this.actuator = new CarActuator(position);
+}
 
     public void setSensorReadings(int[] sensor1, int[] sensor2) {
         this.sensor1Readings = sensor1;
@@ -89,8 +93,8 @@ public class ParkingAssistant{
         boolean Sensor1Broken = median1 == 999;
         boolean Sensor2Broken = median2 == 999;
 
-        boolean Sensor1Valid = !Sensor1Noisy || !Sensor1Broken;
-        boolean Sensor2Valid = !Sensor2Noisy || !Sensor2Broken;
+        boolean Sensor1Valid = !Sensor1Noisy && !Sensor1Broken;
+        boolean Sensor2Valid = !Sensor2Noisy && !Sensor2Broken;
 
         if(!Sensor1Valid && !Sensor2Valid){
             return 0;                                           // TC-IE-6
