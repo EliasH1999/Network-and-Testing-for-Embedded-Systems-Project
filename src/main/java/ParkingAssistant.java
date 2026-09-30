@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 public class ParkingAssistant{
@@ -11,10 +12,14 @@ public class ParkingAssistant{
 
     private int[] sensor1Readings;
     private int[] sensor2Readings;
+    private Sensor sensor1;
+    private Sensor sensor2;
 
     //Constructor
-    public ParkingAssistant(int position) {
+    public ParkingAssistant(Sensor sensor1, Sensor sensor2, int position) {
         this.actuator = new CarActuator(position);
+        this.sensor1 = sensor1;
+        this.sensor2 = sensor2;
     }
 
     public void setSensorReadings(int[] sensor1, int[] sensor2) {
@@ -60,12 +65,15 @@ public class ParkingAssistant{
     
     public int isEmpty(){
         
-        return mockSensor.getReading(actuator.getPosition());
+        int position = actuator.getPosition();
+        
+        int[] readings1 = new int[5];
+        int[] readings2 = new int[5];
 
-        /*
-        int[] readings1 = sensor1Readings.clone();
-        int[] readings2 = sensor2Readings.clone();
-
+        for(int i = 0; i < 5; i++){
+            readings1[i] = sensor1.getReading(position);
+            readings2[i] = sensor2.getReading(position);
+        }
         Arrays.sort(readings1);
         Arrays.sort(readings2);
 
@@ -78,18 +86,24 @@ public class ParkingAssistant{
         boolean Sensor1Noisy = DifferenceValue1 > 50;           // TC-IE-7, TC-IE-9
         boolean Sensor2Noisy = DifferenceValue2 > 50;
 
-        if(Sensor1Noisy && Sensor2Noisy){
+        boolean Sensor1Broken = median1 == 999;
+        boolean Sensor2Broken = median2 == 999;
+
+        boolean Sensor1Valid = !Sensor1Noisy && !Sensor1Broken;
+        boolean Sensor2Valid = !Sensor2Noisy && !Sensor2Broken;
+
+        if(Sensor1Valid && Sensor2Valid){
             return 0;                                           // TC-IE-6
         }
-        else if(Sensor1Noisy){
+        else if(Sensor1Valid){
             return median2;                                     // TC-IE-4
         }
-        else if(Sensor2Noisy){
+        else if(Sensor2Valid){
             return median1;                                     // TC-IE-5  
         }
         else{
             return (median1 + median2) / 2;                     // TC-IE-1, TC-IE-2
-        }*/
+        }
 
         /**
         Description:This method queries the two ultrasound sensors at least 5 times and filters the noise in their results and returns the distance in cm to the nearest object 

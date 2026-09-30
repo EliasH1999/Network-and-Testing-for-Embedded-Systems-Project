@@ -13,6 +13,14 @@ public class CarActuatorTest {
 
     Mockito.verify(carActuator).moveforward();
 
+    Actuator actuatorMock = Mockito.mock(Actuator.class);
+    }
+@Test public void testCarActuatorGetPosition() {
+    Actuator actuatorMock = Mockito.mock(Actuator.class);
+    Mockito.when(actuatorMock.getPosition())
+       .thenReturn(0)
+       .thenReturn(1);  
+
     }
 
     @Test public void testCarActuatorMoveBackward(){ 
@@ -31,7 +39,7 @@ public class CarActuatorTest {
         Sensor sensor1 = new MockSensor(false);
         Sensor sensor2 = new MockSensor(false);
 
-        ParkingAssistant parkingAssistant = new ParkingAssistant(0);
+        ParkingAssistant parkingAssistant = new ParkingAssistant(sensor1, sensor2, 0);
 
         assertEquals(0, parkingAssistant.WhereIs().getPosition()); 
         assertEquals(false, parkingAssistant.WhereIs().isParked());

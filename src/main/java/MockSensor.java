@@ -19,20 +19,18 @@ public class MockSensor implements Sensor{
             return 120;
         }
 
-        // Parking place 2: 50-54
-        // 5 metres -> enough for parking
-        if (position >= 50 && position <= 54) {
-            return 120;
+        if(position >= 50. && position <= 52){
+            return 150;
         }
 
-        // Parking place 3: 80-86
-        // 7 metres -> enough for parking
-        if (position >= 80 && position <= 86) {
-            return 120;
+        if(position >= 250 && position <= 256){
+            return 150;
         }
 
-        // No parking place
-        return 30;
+        if(position >= 450 && position <= 455){
+            return 150;
+        }
+        return 50;
     }
 
 }
