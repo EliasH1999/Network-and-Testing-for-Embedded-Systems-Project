@@ -8,17 +8,18 @@ public class ParkingAssistant{
     private List<Boolean> parkingPlaces = new ArrayList<>(Collections.nCopies(streetLength + 1, false)); 
     private boolean parked = false;
 
-    private int[] sensor1Readings;
-    private int[] sensor2Readings;
+    // private int[] sensor1Readings;
+    // private int[] sensor2Readings;
 
     private Sensor sensor1;
-    private Sensor sensor2; 
+    private Sensor sensor2;
 
-    //Constructor
-    public ParkingAssistant(int position) {
-        this.actuator = new CarActuator(position);
-    }
+    // //Phase1 Constructor
+    // public ParkingAssistant(int position) {
+    //     this.actuator = new CarActuator(position);
+    // }
 
+    //PHASE2 Constructor
     public ParkingAssistant(Sensor sensor1, Sensor sensor2, Actuator actuator) {
         this.sensor1 = sensor1;
         this.sensor2 = sensor2;
@@ -27,11 +28,11 @@ public class ParkingAssistant{
     }
 
 
-
-    public void setSensorReadings(int[] sensor1, int[] sensor2) {
-        this.sensor1Readings = sensor1;
-        this.sensor2Readings = sensor2;
-    }
+    // //Phase1 helper function
+    // public void setSensorReadings(int[] sensor1, int[] sensor2) {
+    //     this.sensor1Readings = sensor1;
+    //     this.sensor2Readings = sensor2;
+    // }
 
 
     public ParkingStatus MoveForward(){
@@ -85,11 +86,12 @@ public class ParkingAssistant{
         int median1 = readings1[2];                             // TC-IE-1, TC-IE-2, TC-IE-3
         int median2 = readings2[2];
 
+
         int DifferenceValue1 = readings1[4] - readings1[0];
         int DifferenceValue2 = readings2[4] - readings2[0];
 
-        boolean Sensor1Noisy = DifferenceValue1 > 50;           // TC-IE-7, TC-IE-9
-        boolean Sensor2Noisy = DifferenceValue2 > 50;
+        boolean Sensor1Noisy = DifferenceValue1 > 50 || readings1[0] < 0 || readings1[readings1.length - 1] > 200;           // TC-IE-7, TC-IE-9
+        boolean Sensor2Noisy = DifferenceValue2 > 50 || readings2[0] < 0 || readings2[readings2.length - 1] > 200;
 
         if(Sensor1Noisy && Sensor2Noisy){
             return 0;                                           // TC-IE-6

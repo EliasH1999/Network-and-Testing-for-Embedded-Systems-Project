@@ -239,9 +239,79 @@ public class ParkingAssistantTest {
         assertEquals(150, parkingAssistant.isEmpty(), "Both sensors report 150, so isEmpty() should return 150.");
         verify(mockSensor1, times(5)).getReading(anyInt());
         verify(mockSensor2, times(5)).getReading(anyInt());
+    }   
+
+    @Test 
+    public void testOverUpperBoundaryRecgonizedAsBroken(){
+        int[] sensor1 = {100, 120, 130, 140, 145}; //Median is 130
+        int[] sensor2 = {999, 999, 999, 999, 999};
+        ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
+        
+        assertEquals(130, parkingAssistant.isEmpty(), "Upper boundary readings should be recognized as broken and return 0.");
+
     }
 
-    
+    @Test 
+    public void testUnderLowerBoundaryRecgonizedAsBroken(){
+        int[] sensor1 = {100, 120, 130, 140, 145}; //Median is 130
+        int[] sensor2 = {-1, -1, -1, -1, -1};
+        ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
+        
+        assertEquals(130, parkingAssistant.isEmpty(), "Upper boundary readings should be recognized as broken and return 0.");
+
+    }
+
+    @Test 
+    public void testOnOverUpperBoundaryRecgonizedAsBroken(){
+        int[] sensor1 = {200, 200, 200, 200, 200}; //Median is 200
+        int[] sensor2 = {100, 120, 130, 140, 145}; //Median is 130
+        ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
+        
+        assertEquals(165, parkingAssistant.isEmpty(), "Upper boundary readings should be recognized as broken and return 0.");
+
+    }
+
+    @Test 
+    public void testOnLowerBoundaryRecgonizedAsValid(){
+        int[] sensor1 = {100, 120, 130, 140, 145}; //Median is 130
+        int[] sensor2 = {0, 0, 0, 0, 0};
+        ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
+        
+        assertEquals(65, parkingAssistant.isEmpty(), "Upper boundary readings should be recognized as broken and return 0.");
+
+    }
+
+    @Test 
+    public void testOneOverUpperBoundaryRecgonizedAsValid(){
+        int[] sensor1 = {200, 200, 200, 200, 201}; //Median is 200
+        int[] sensor2 = {100, 120, 130, 140, 145}; //Median is 130
+        ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
+        
+        assertEquals(130, parkingAssistant.isEmpty(), "Upper boundary readings should be recognized as broken and return 0.");
+
+    }
+
+    @Test 
+    public void testOneUnderLowerBoundaryRecgonizedAsBroken(){
+        int[] sensor1 = {100, 120, 130, 140, 145}; //Median is 130
+        int[] sensor2 = {0, 0, 0, 0, -1};
+        ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
+        
+        assertEquals(130, parkingAssistant.isEmpty(), "Upper boundary readings should be recognized as broken and return 0.");
+
+    }
+
+    @Test 
+    public void testBothSensorsRecgonizedAsBroken(){
+        int[] sensor1 = {-5, -5, -5, -5, -5}; //Median is 130
+        int[] sensor2 = {999, 999, 999, 999, 999};
+        ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
+            
+        assertEquals(0, parkingAssistant.isEmpty(), "Upper boundary readings should be recognized as broken and return 0.");
+
+    }
+
+
 
     // PHASE1 Test cases for MoveBackward method
 
