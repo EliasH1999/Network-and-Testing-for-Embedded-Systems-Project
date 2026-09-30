@@ -16,8 +16,8 @@ public class ParkingAssistant{
     private Sensor sensor2;
 
     //Constructor
-    public ParkingAssistant(Sensor sensor1, Sensor sensor2, int position) {
-        this.actuator = new CarActuator(position);
+    public ParkingAssistant(Sensor sensor1, Sensor sensor2, CarActuator position) {
+        this.actuator = position;
         this.sensor1 = sensor1;
         this.sensor2 = sensor2;
     }
@@ -89,16 +89,16 @@ public class ParkingAssistant{
         boolean Sensor1Broken = median1 == 999;
         boolean Sensor2Broken = median2 == 999;
 
-        boolean Sensor1Valid = !Sensor1Noisy && !Sensor1Broken;
-        boolean Sensor2Valid = !Sensor2Noisy && !Sensor2Broken;
+        boolean Sensor1Valid = !Sensor1Noisy || !Sensor1Broken;
+        boolean Sensor2Valid = !Sensor2Noisy || !Sensor2Broken;
 
-        if(Sensor1Valid && Sensor2Valid){
+        if(!Sensor1Valid && !Sensor2Valid){
             return 0;                                           // TC-IE-6
         }
-        else if(Sensor1Valid){
+        else if(!Sensor1Valid){
             return median2;                                     // TC-IE-4
         }
-        else if(Sensor2Valid){
+        else if(!Sensor2Valid){
             return median1;                                     // TC-IE-5  
         }
         else{
@@ -211,6 +211,7 @@ public class ParkingAssistant{
         if(parked) {            // TC-UP-2
             parked = false;     // TC-UP-1, TC-UP-3
         }
+
 
     /*
         Description: It moves the car forward (and to left) to front of the parking place, if it is parked.

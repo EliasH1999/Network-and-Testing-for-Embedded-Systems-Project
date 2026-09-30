@@ -9,7 +9,7 @@ public class MockSensor implements Sensor{
     @Override 
     public int getReading(int position){
 
-        if (breakDown && position >= 250 ){
+        if (breakDown && position >= 249 ){
             return 999;
         }
 
