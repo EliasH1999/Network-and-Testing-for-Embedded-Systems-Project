@@ -89,8 +89,8 @@ public class ParkingAssistant{
         boolean Sensor1Broken = median1 == 999;
         boolean Sensor2Broken = median2 == 999;
 
-        boolean Sensor1Valid = !Sensor1Noisy || !Sensor1Broken;
-        boolean Sensor2Valid = !Sensor2Noisy || !Sensor2Broken;
+        boolean Sensor1Valid = !Sensor1Noisy && !Sensor1Broken;
+        boolean Sensor2Valid = !Sensor2Noisy && !Sensor2Broken;
 
         if(!Sensor1Valid && !Sensor2Valid){
             return 0;                                           // TC-IE-6
