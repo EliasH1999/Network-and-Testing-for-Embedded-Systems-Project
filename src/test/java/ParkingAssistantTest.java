@@ -53,7 +53,7 @@ public class ParkingAssistantTest {
         assertEquals(251, result.getcurrentPosition(), "The car should have moved forward by 1 meter from the middle of the street.");
     }
 
-    // test cases for the moveForward method
+    
     @Test
     public void testMoveForward() { // TC-MF-2: first move from 0
         int[] sensor1 = {100, 120, 130, 140, 145};
@@ -126,6 +126,48 @@ public class ParkingAssistantTest {
         assertTrue(b.getparkingPlaces().get(2), "Second status should  know about metre 2.");
         assertTrue(b.getparkingPlaces().get(1), "Second status should know about metre 1.");
     }
+
+    //Phase2 Tests for moveForward
+
+    @Test
+    public void testMoveForwardRefusedByActuatorDoesNotReadSensor(){
+        Sensor mockSensor1 = mock(Sensor.class);
+        Sensor mockSensor2 = mock(Sensor.class);
+        Actuator mockActuator = mock(Actuator.class);
+
+        when(mockActuator.moveForward()).thenReturn(false);
+        when(mockActuator.getPosition()).thenReturn(250);
+        ParkingAssistant parkingAssistant = new ParkingAssistant(mockSensor1, mockSensor2, mockActuator);
+
+        ParkingStatus result = parkingAssistant.MoveForward();  
+
+        assertEquals(250, result.getcurrentPosition(), "The position should be what the actuator reports.");
+        verify(mockSensor1, never()).getReading(anyInt());
+        verify(mockSensor2, never()).getReading(anyInt());
+        verify(mockActuator, times(1)).moveForward();
+
+    }
+
+    @Test
+    public void testMoveForwardSendsOneCommandToActuator(){
+        Sensor mockSensor = mock(Sensor.class);
+        when(mockSensor.getReading(anyInt())).thenReturn(130);
+        Actuator mockActuator = mock(Actuator.class);
+        when(mockActuator.moveForward()).thenReturn(true);
+        when(mockActuator.getPosition()).thenReturn(11);
+        ParkingAssistant parkingAssistant = new ParkingAssistant(mockSensor, mockSensor, mockActuator);
+
+        ParkingStatus result = parkingAssistant.MoveForward();
+
+        verify(mockActuator, times(1)).moveForward();
+        assertEquals(11, result.getcurrentPosition(), "The car should have moved forward by 1.");
+        assertTrue(result.getparkingPlaces().get(11), "The parking place at metre 11 should be free.");
+    }
+
+   
+
+
+    
 
 
     //PHASE1 Test for isEmpty() method
@@ -306,7 +348,7 @@ public class ParkingAssistantTest {
         int[] sensor1 = {-5, -5, -5, -5, -5}; //Median is 130
         int[] sensor2 = {999, 999, 999, 999, 999};
         ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
-            
+
         assertEquals(0, parkingAssistant.isEmpty(), "Upper boundary readings should be recognized as broken and return 0.");
 
     }
