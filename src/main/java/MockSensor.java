@@ -23,11 +23,11 @@ public class MockSensor implements Sensor{
             return 150;
         }
 
-        if(position >= 250 && position <= 256){
+        if(position >= 250 && position <= 254){
             return 150;
         }
 
-        if(position >= 450 && position <= 455){
+        if(position >= 450 && position <= 454){
             return 150;
         }
         return 50;

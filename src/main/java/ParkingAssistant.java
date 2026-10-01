@@ -75,9 +75,14 @@ public class ParkingAssistant{
         int[] readings2 = new int[5];
 
         for(int i = 0; i < 5; i++){
+            if(sensor1 != null && sensor2 != null){
             readings1[i] = sensor1.getReading(position);
             readings2[i] = sensor2.getReading(position);
+        } else{
+            readings1[i] = sensor1Readings[i];
+            readings2[i] = sensor2Readings[i];
         }
+    }
         Arrays.sort(readings1);
         Arrays.sort(readings2);
 
@@ -108,6 +113,8 @@ public class ParkingAssistant{
         else{
             return (median1 + median2) / 2;                     // TC-IE-1, TC-IE-2
         }
+    
+    
 
         /**
         Description:This method queries the two ultrasound sensors at least 5 times and filters the noise in their results and returns the distance in cm to the nearest object 
