@@ -10,22 +10,24 @@ public class CarActuatorTest {
  @Test 
     public void testStartPosition(){
         CarActuator carActuator = new CarActuator(42);
-        assertEquals(42, carActuator.getPosition(), "The initial position should be 250.");
+        assertEquals(42, carActuator.getPosition(), "The initial position should be 42.");
     }
 
     @Test
     public void testMoveForwardFromMiddle(){
         CarActuator carActuator = new CarActuator(250);
-        carActuator.moveforward();
+         ParkingAssistant parkingAssistant = new ParkingAssistant(new MockSensor(false), new MockSensor(false), carActuator);
+        parkingAssistant.MoveForward();
         assertTrue(true, "The move should be accepted");
-        assertEquals(251, carActuator.getPosition(), "The position should be 43 after moving forward once.");
+        assertEquals(251, carActuator.getPosition(), "The position should be 251 after moving forward once.");
 
     }
 
     @Test
     public void testMoveForwardFromEnd(){
         CarActuator carActuator = new CarActuator(500);
-        carActuator.moveforward();
+        ParkingAssistant parkingAssistant = new ParkingAssistant(new MockSensor(false), new MockSensor(false), carActuator);
+        parkingAssistant.MoveForward();
         assertFalse(false, "The move should be rejected");
         assertEquals(500, carActuator.getPosition(), "The position should remain 500 after a rejected move.");
     }
@@ -33,7 +35,8 @@ public class CarActuatorTest {
     @Test 
     public void testMoveBackwardFromMiddle(){
         CarActuator carActuator = new CarActuator(250);
-        carActuator.movebackward();
+        ParkingAssistant parkingAssistant = new ParkingAssistant(new MockSensor(false), new MockSensor(false), carActuator);
+        parkingAssistant.MoveBackward();
         assertTrue(true, "The move should be accepted");
         assertEquals(249, carActuator.getPosition(), "The position should be 249 after moving backward once.");
     }
@@ -41,7 +44,8 @@ public class CarActuatorTest {
     @Test 
     public void testMoveBackwardFromStart(){
         CarActuator carActuator = new CarActuator(0);
-        carActuator.movebackward();
+        ParkingAssistant parkingAssistant = new ParkingAssistant(new MockSensor(false), new MockSensor(false), carActuator);
+        parkingAssistant.MoveBackward();
         assertFalse(false, "The move should be rejected");
         assertEquals(0, carActuator.getPosition(), "The position should remain 0 after a rejected move.");
 
@@ -57,7 +61,8 @@ public class CarActuatorTest {
     @Test
     public void TestLastMeterAccepted(){
         CarActuator carActuator = new CarActuator(499);
-        carActuator.moveforward();
+        ParkingAssistant parkingAssistant = new ParkingAssistant(new MockSensor(false), new MockSensor(false), carActuator);
+        parkingAssistant.MoveForward();
         assertTrue(true, "The move should be accepted");
         assertEquals(500, carActuator.getPosition(), "The position should be 500 after moving forward from 499.");
     }
@@ -80,7 +85,7 @@ public class CarActuatorTest {
         assertEquals(254, parkingAssistant.WhereIs().getPosition());
 
 
-        actuator.moveforward();
+        parkingAssistant.MoveForward();
         assertEquals(255, parkingAssistant.WhereIs().getPosition());
         parkingAssistant.Park();
         assertTrue(parkingAssistant.WhereIs().isParked());
@@ -88,7 +93,7 @@ public class CarActuatorTest {
         parkingAssistant.Unpark();
         assertEquals(454, parkingAssistant.WhereIs().getPosition());
 
-        actuator.moveforward();
+        parkingAssistant.MoveForward();
 
         parkingAssistant.Park();
         assertEquals(500, parkingAssistant.WhereIs().getPosition());
@@ -112,7 +117,7 @@ public class CarActuatorTest {
         assertEquals(254, parkingAssistant.WhereIs().getPosition());
 
 
-        actuator.moveforward();
+        parkingAssistant.MoveForward();
         assertEquals(255, parkingAssistant.WhereIs().getPosition());
         parkingAssistant.Park();
         assertTrue(parkingAssistant.WhereIs().isParked());
@@ -120,13 +125,13 @@ public class CarActuatorTest {
         parkingAssistant.Unpark();
         assertEquals(454, parkingAssistant.WhereIs().getPosition());
 
-        actuator.moveforward();
+        parkingAssistant.MoveForward();
 
         parkingAssistant.Park();
         assertEquals(500, parkingAssistant.WhereIs().getPosition());
 
         for(int i = 0; i < 61; i++){
-            actuator.movebackward();
+            parkingAssistant.MoveBackward();
         }
         assertEquals(439, parkingAssistant.WhereIs().getPosition());
 
