@@ -157,7 +157,8 @@ public class CarActuatorTest {
     }
 
     @Test
-    public void scenario4WithMockito_twoParkingPlacesOneTooSmall() {
+    // This test uses mockito simulate the sensors and test the parking assistant's behavior in a controlled scenario.
+    public void TestScenarioFour(){
     
         Sensor sensor1 = mock(Sensor.class);
         Sensor sensor2 = mock(Sensor.class);
