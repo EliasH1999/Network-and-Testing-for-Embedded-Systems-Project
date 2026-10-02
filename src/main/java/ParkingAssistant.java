@@ -70,14 +70,11 @@ public class ParkingAssistant{
         int[] readings2 = new int[5];
 
         for(int i = 0; i < 5; i++){
-            if(sensor1 != null && sensor2 != null){
+
             readings1[i] = sensor1.getReading(position);
             readings2[i] = sensor2.getReading(position);
-        } else{
-            readings1[i] = sensor1Readings[i];
-            readings2[i] = sensor2Readings[i];
         }
-    }
+    
         Arrays.sort(readings1);
         Arrays.sort(readings2);
 
