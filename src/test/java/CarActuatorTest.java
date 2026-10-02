@@ -10,13 +10,13 @@ import static org.mockito.Mockito.when;
 public class CarActuatorTest {
 
  @Test 
-    public void testStartPosition(){
+    public void testStartPosition(){ //TC-CA-1
         CarActuator carActuator = new CarActuator(42);
         assertEquals(42, carActuator.getPosition(), "The initial position should be 42.");
     }
 
     @Test
-    public void testMoveForwardFromMiddle(){
+    public void testMoveForwardFromMiddle(){ //TC-CA-2
         CarActuator carActuator = new CarActuator(250);
         ParkingAssistant parkingAssistant = new ParkingAssistant(new MockSensor(false), new MockSensor(false), carActuator);
         parkingAssistant.MoveForward();
@@ -26,7 +26,7 @@ public class CarActuatorTest {
     }
 
     @Test
-    public void testMoveForwardFromEnd(){
+    public void testMoveForwardFromEnd(){ //TC-CA-3
         CarActuator carActuator = new CarActuator(500);
         ParkingAssistant parkingAssistant = new ParkingAssistant(new MockSensor(false), new MockSensor(false), carActuator);
         parkingAssistant.MoveForward();
@@ -35,7 +35,7 @@ public class CarActuatorTest {
     }
 
     @Test 
-    public void testMoveBackwardFromMiddle(){
+    public void testMoveBackwardFromMiddle(){ //TC-CA-4
         CarActuator carActuator = new CarActuator(250);
         ParkingAssistant parkingAssistant = new ParkingAssistant(new MockSensor(false), new MockSensor(false), carActuator);
         parkingAssistant.MoveBackward();
@@ -44,7 +44,7 @@ public class CarActuatorTest {
     }
 
     @Test 
-    public void testMoveBackwardFromStart(){
+    public void testMoveBackwardFromStart(){ //TC-CA-5
         CarActuator carActuator = new CarActuator(0);
         ParkingAssistant parkingAssistant = new ParkingAssistant(new MockSensor(false), new MockSensor(false), carActuator);
         parkingAssistant.MoveBackward();
@@ -54,14 +54,14 @@ public class CarActuatorTest {
     }
 
     @Test 
-    public void testStartPositionOutsideBound(){
+    public void testStartPositionOutsideBound(){ //TC-CA-6
         assertThrows(IllegalArgumentException.class, () -> new CarActuator(-1));
         assertThrows(IllegalArgumentException.class, () -> new CarActuator(501));
 
     }
 
     @Test
-    public void TestLastMeterAccepted(){
+    public void TestLastMeterAccepted(){ //TC-CA-7
         CarActuator carActuator = new CarActuator(499);
         ParkingAssistant parkingAssistant = new ParkingAssistant(new MockSensor(false), new MockSensor(false), carActuator);
         parkingAssistant.MoveForward();
@@ -70,7 +70,7 @@ public class CarActuatorTest {
     }
 
     @Test   
-    public void TestScenarioOne(){
+    public void TestScenarioOne(){ //TC-CA-8
         CarActuator actuator = new CarActuator(0);
         Sensor sensor1 = new MockSensor(false);
         Sensor sensor2 = new MockSensor(false);
@@ -102,7 +102,7 @@ public class CarActuatorTest {
 
     }
     @Test
-    public void TestScenarioTwo(){
+    public void TestScenarioTwo(){ //TC-CA-9
         CarActuator actuator = new CarActuator(0);
         Sensor sensor1 = new MockSensor(false);
         Sensor sensor2 = new MockSensor(false);
@@ -141,7 +141,7 @@ public class CarActuatorTest {
         assertTrue(parkingAssistant.WhereIs().isParked());
     }
     @Test   
-    public void TestScenarioThree(){
+    public void TestScenarioThree(){ //TC-CA-10
         CarActuator actuator = new CarActuator(0);
         Sensor sensor1 = new MockSensor(true);
         Sensor sensor2 = new MockSensor(true);
@@ -158,7 +158,7 @@ public class CarActuatorTest {
 
     @Test
     // This test uses mockito simulate the sensors and test the parking assistant's behavior in a controlled scenario.
-    public void TestScenarioFour(){
+    public void scenario4WithMockito_twoParkingPlacesOneTooSmall() { //TC-CA-11
     
         Sensor sensor1 = mock(Sensor.class);
         Sensor sensor2 = mock(Sensor.class);
@@ -207,6 +207,17 @@ public class CarActuatorTest {
         assertEquals(true, parkingAssistant.WhereIs().isParked());
 
         }
+
+        @Test
+        public void TestScenarioOneSensorBroken() { //TC-CA-12
+            Sensor sensor1 = new MockSensor(true);    // breaks at the middle of the street
+            Sensor sensor2 = new MockSensor(false);   // keeps working
+            ParkingAssistant parkingAssistant = new ParkingAssistant(sensor1, sensor2, new CarActuator(0));
+
+            parkingAssistant.Park();
+            assertTrue(parkingAssistant.WhereIs().isParked());
+            assertEquals(254, parkingAssistant.WhereIs().getPosition());   // found using sensor 2 alone
+}
 
 }
 

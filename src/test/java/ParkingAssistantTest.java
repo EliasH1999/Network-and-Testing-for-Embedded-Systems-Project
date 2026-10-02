@@ -133,7 +133,7 @@ public class ParkingAssistantTest {
     //Phase2 Tests for moveForward
 
     @Test
-    public void testMoveForwardRefusedByActuatorDoesNotReadSensor(){
+    public void testMoveForwardRefusedByActuatorDoesNotReadSensor(){ // TC-MF-8
         Sensor MockSensor1 = mock(Sensor.class);
         Sensor MockSensor2 = mock(Sensor.class);
         Actuator actuator = mock(Actuator.class);
@@ -152,7 +152,7 @@ public class ParkingAssistantTest {
     }
 
     @Test
-    public void testMoveForwardSendsOneCommandToActuator(){
+    public void testMoveForwardSendsOneCommandToActuator(){ // TC-MF-9
         Sensor MockSensor = mock(Sensor.class);
         when(MockSensor.getReading(anyInt())).thenReturn(130);
         Actuator actuator = mock(Actuator.class);
@@ -287,7 +287,7 @@ public class ParkingAssistantTest {
     }   
 
     @Test 
-    public void testOverUpperBoundaryRecgonizedAsBroken(){
+    public void testOverUpperBoundaryRecgonizedAsBroken(){ // TC-IE-11
         int[] sensor1 = {100, 120, 130, 140, 145}; //Median is 130
         int[] sensor2 = {999, 999, 999, 999, 999};
         ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
@@ -297,7 +297,7 @@ public class ParkingAssistantTest {
     }
 
     @Test 
-    public void testUnderLowerBoundaryRecgonizedAsBroken(){
+    public void testUnderLowerBoundaryRecgonizedAsBroken(){ // TC-IE-12
         int[] sensor1 = {100, 120, 130, 140, 145}; //Median is 130
         int[] sensor2 = {-1, -1, -1, -1, -1};
         ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
@@ -307,7 +307,7 @@ public class ParkingAssistantTest {
     }
 
     @Test 
-    public void testOnOverUpperBoundaryRecgonizedAsBroken(){
+    public void testOnOverUpperBoundaryRecgonizedAsBroken(){ // TC-IE-13
         int[] sensor1 = {200, 200, 200, 200, 200}; //Median is 200
         int[] sensor2 = {100, 120, 130, 140, 145}; //Median is 130
         ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
@@ -317,7 +317,7 @@ public class ParkingAssistantTest {
     }
 
     @Test 
-    public void testOnLowerBoundaryRecgonizedAsValid(){
+    public void testOnLowerBoundaryRecgonizedAsValid(){ // TC-IE-14
         int[] sensor1 = {100, 120, 130, 140, 145}; //Median is 130
         int[] sensor2 = {0, 0, 0, 0, 0};
         ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
@@ -327,7 +327,7 @@ public class ParkingAssistantTest {
     }
 
     @Test 
-    public void testOneOverUpperBoundaryRecgonizedAsValid(){
+    public void testOneOverUpperBoundaryRecgonizedAsValid(){ // TC-IE-15
         int[] sensor1 = {200, 200, 200, 200, 201}; //Median is 200
         int[] sensor2 = {100, 120, 130, 140, 145}; //Median is 130
         ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
@@ -337,7 +337,7 @@ public class ParkingAssistantTest {
     }
 
     @Test 
-    public void testOneUnderLowerBoundaryRecgonizedAsBroken(){
+    public void testOneUnderLowerBoundaryRecgonizedAsBroken(){ // TC-IE-16
         int[] sensor1 = {100, 120, 130, 140, 145}; //Median is 130
         int[] sensor2 = {0, 0, 0, 0, -1};
         ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
@@ -347,7 +347,7 @@ public class ParkingAssistantTest {
     }
 
     @Test 
-    public void testBothSensorsRecgonizedAsBroken(){
+    public void testBothSensorsRecgonizedAsBroken(){ // TC-IE-17
         int[] sensor1 = {-5, -5, -5, -5, -5}; //Median is 130
         int[] sensor2 = {999, 999, 999, 999, 999};
         ParkingAssistant parkingAssistant = create(sensor1, sensor2, 0);
