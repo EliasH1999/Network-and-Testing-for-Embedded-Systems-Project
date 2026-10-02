@@ -9,17 +9,21 @@ public class CarActuator implements Actuator {
     }
 
     @Override
-    public void moveforward() {
+    public boolean moveForward() {
         if (position < 500) {
             position++;
+            return true;
         }
+        return false;
     }
 
     @Override
-    public void movebackward() {
-        if (position > 0) {
+    public boolean moveBackward() {
+        if (position > 0){
             position--;
+            return true;
         }
+        return false;
     }
 
     @Override

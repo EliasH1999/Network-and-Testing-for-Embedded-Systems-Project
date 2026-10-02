@@ -1,5 +1,5 @@
 public interface Actuator {
-    void moveforward();
-    void movebackward();
+    boolean moveForward();
+    boolean moveBackward();
     int getPosition();
 }   

@@ -3,7 +3,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class CarActuatorTest {
 
@@ -16,7 +18,7 @@ public class CarActuatorTest {
     @Test
     public void testMoveForwardFromMiddle(){
         CarActuator carActuator = new CarActuator(250);
-         ParkingAssistant parkingAssistant = new ParkingAssistant(new MockSensor(false), new MockSensor(false), carActuator);
+        ParkingAssistant parkingAssistant = new ParkingAssistant(new MockSensor(false), new MockSensor(false), carActuator);
         parkingAssistant.MoveForward();
         assertTrue(true, "The move should be accepted");
         assertEquals(251, carActuator.getPosition(), "The position should be 251 after moving forward once.");
@@ -138,7 +140,7 @@ public class CarActuatorTest {
         parkingAssistant.Park();
         assertTrue(parkingAssistant.WhereIs().isParked());
     }
-        @Test   
+    @Test   
     public void TestScenarioThree(){
         CarActuator actuator = new CarActuator(0);
         Sensor sensor1 = new MockSensor(true);
@@ -153,5 +155,57 @@ public class CarActuatorTest {
         assertEquals(500, parkingAssistant.WhereIs().getPosition());
 
     }
+
+    @Test
+    public void scenario4WithMockito_twoParkingPlacesOneTooSmall() {
+    
+        Sensor sensor1 = mock(Sensor.class);
+        Sensor sensor2 = mock(Sensor.class);
+    
+        CarActuator actuator = new CarActuator(0);
+
+        ParkingAssistant parkingAssistant = new ParkingAssistant(sensor1, sensor2, actuator);
+    
+        // Normal street: no parking place
+        when(sensor1.getReading(anyInt())).thenReturn(30);
+        when(sensor2.getReading(anyInt())).thenReturn(30);
+    
+        // Parking place 1: positions 20-22
+        // Only 3 meters -> too small
+        when(sensor1.getReading(20)).thenReturn(120);
+        when(sensor1.getReading(21)).thenReturn(120);
+        when(sensor1.getReading(22)).thenReturn(120);
+
+        when(sensor2.getReading(20)).thenReturn(120);
+        when(sensor2.getReading(21)).thenReturn(120);
+        when(sensor2.getReading(22)).thenReturn(120);
+    
+        // Parking place 2: positions 50-54
+        // 5 meters -> ok
+        when(sensor1.getReading(50)).thenReturn(120);
+        when(sensor1.getReading(51)).thenReturn(120);
+        when(sensor1.getReading(52)).thenReturn(120);
+        when(sensor1.getReading(53)).thenReturn(120);
+        when(sensor1.getReading(54)).thenReturn(120);
+    
+        when(sensor2.getReading(50)).thenReturn(120);
+        when(sensor2.getReading(51)).thenReturn(120);
+        when(sensor2.getReading(52)).thenReturn(120);
+        when(sensor2.getReading(53)).thenReturn(120);
+        when(sensor2.getReading(54)).thenReturn(120);
+    
+        // Start at position 0
+        assertEquals(0, parkingAssistant.WhereIs().getPosition());
+    
+        // Search for a parking place and park
+        parkingAssistant.Park();
+    
+        // The first place was too small.
+        // The second place is 5 meters and should be selected.
+        assertEquals(54, parkingAssistant.WhereIs().getPosition());
+        assertEquals(true, parkingAssistant.WhereIs().isParked());
+
+        }
+
 }
 

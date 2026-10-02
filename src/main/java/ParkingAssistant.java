@@ -16,15 +16,17 @@ public class ParkingAssistant{
     private Sensor sensor2;
 
     //Constructor
-    public ParkingAssistant(Sensor sensor1, Sensor sensor2, CarActuator position) {
-        this.actuator = position;
+    public ParkingAssistant(Sensor sensor1, Sensor sensor2, Actuator actuator) {
+        this.actuator = actuator;
         this.sensor1 = sensor1;
         this.sensor2 = sensor2;
     }
-    //Constructor for phase 1 testing
+    
+    //Constructor for phase 1 testing7
+    /* 
     public ParkingAssistant(int position) {
     this.actuator = new CarActuator(position);
-}
+    }*/
 
     public void setSensorReadings(int[] sensor1, int[] sensor2) {
         this.sensor1Readings = sensor1;
@@ -35,9 +37,7 @@ public class ParkingAssistant{
     public ParkingStatus MoveForward(){
 
 
-
-        if(actuator.getPosition() < streetLength && !parked){                 // TC-MF-3, TC-MF-4
-            actuator.moveforward();                        // TC-MF-1, TC-MF-2
+        if(!parked && actuator.moveForward()){                 // TC-MF-3, TC-MF-4                        // TC-MF-1, TC-MF-2
             parkingPlaces.set(actuator.getPosition(), isEmpty() >= 100);      // TC-MF-5, TC-MF-6
         }
             
@@ -143,8 +143,7 @@ public class ParkingAssistant{
      
     
         public ParkingStatus MoveBackward(){
-            if(actuator.getPosition() > 0 && !parked){  
-            actuator.movebackward();                         // TC-MB-2, TC-MB-3                                           // TC-MB-1, TC-MB-5
+            if(!parked && actuator.moveBackward()){                               // TC-MB-2, TC-MB-3                                           // TC-MB-1, TC-MB-5
             parkingPlaces.set(actuator.getPosition(), isEmpty() >= 100);          // TC-MB-4
         }
             return new ParkingStatus(actuator.getPosition(), parkingPlaces);      // TC-MB-1, TC-MB-6
