@@ -164,7 +164,7 @@ public class ParkingAssistant{
     
 
     public void Park(){
-    while(actuator.getPosition() <= streetLength && !parked) {                // TC-PK-6
+    while(!parked) {                // TC-PK-6
         boolean parkable = actuator.getPosition() >= 5;                       // TC-PK-7
         
         if(parkable){
