@@ -22,16 +22,11 @@ public class ParkingAssistant{
         this.sensor2 = sensor2;
     }
     
-    //Constructor for phase 1 testing7
+    //Constructor for phase 1 testing
     /* 
     public ParkingAssistant(int position) {
     this.actuator = new CarActuator(position);
     }*/
-
-    public void setSensorReadings(int[] sensor1, int[] sensor2) {
-        this.sensor1Readings = sensor1;
-        this.sensor2Readings = sensor2;
-    }
 
 
     public ParkingStatus MoveForward(){
@@ -92,8 +87,9 @@ public class ParkingAssistant{
         int DifferenceValue1 = readings1[4] - readings1[0];
         int DifferenceValue2 = readings2[4] - readings2[0];
 
-        boolean Sensor1Noisy = DifferenceValue1 > 50;           // TC-IE-7, TC-IE-9
-        boolean Sensor2Noisy = DifferenceValue2 > 50;
+        boolean Sensor1Noisy = DifferenceValue1 > 50 || readings1[0] < 0 || readings1[readings1.length - 1] > 200;           // TC-IE-7, TC-IE-9
+        boolean Sensor2Noisy = DifferenceValue2 > 50 || readings2[0] < 0 || readings2[readings2.length - 1] > 200;
+
 
         boolean Sensor1Broken = median1 == 999;
         boolean Sensor2Broken = median2 == 999;
