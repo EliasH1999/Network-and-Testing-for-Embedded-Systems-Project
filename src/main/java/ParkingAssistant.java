@@ -81,15 +81,16 @@ public class ParkingAssistant{
         int median1 = readings1[2];                             // TC-IE-1, TC-IE-2, TC-IE-3
         int median2 = readings2[2];
 
-        int DifferenceValue1 = readings1[4] - readings1[0];
-        int DifferenceValue2 = readings2[4] - readings2[0];
+        // int DifferenceValue1 = readings1[4] - readings1[0];
+        // int DifferenceValue2 = readings2[4] - readings2[0];
 
-        boolean Sensor1Noisy = DifferenceValue1 > 50 || readings1[0] < 0 || readings1[readings1.length - 1] > 200;           // TC-IE-7, TC-IE-9
-        boolean Sensor2Noisy = DifferenceValue2 > 50 || readings2[0] < 0 || readings2[readings2.length - 1] > 200;
+        // Noisy (Phase 1): the sensor works, but its readings vary too much
+        boolean Sensor1Noisy = readings1[4] - readings1[0] > 50;              // TC-IE-7, TC-IE-9
+        boolean Sensor2Noisy = readings2[4] - readings2[0] > 50;
 
-
-        boolean Sensor1Broken = median1 == 999;
-        boolean Sensor2Broken = median2 == 999;
+        // Broken (Phase 2): a reading outside the valid range 0..200 cm
+        boolean Sensor1Broken = readings1[0] < 0 || readings1[4] > 200;       // TC-IE-11 to TC-IE-17
+        boolean Sensor2Broken = readings2[0] < 0 || readings2[4] > 200;
 
         boolean Sensor1Valid = !Sensor1Noisy && !Sensor1Broken;
         boolean Sensor2Valid = !Sensor2Noisy && !Sensor2Broken;
